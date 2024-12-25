@@ -26,17 +26,32 @@
     {
       "id": 1,
       "difficulty": "easy",
-      "uniqueCards": 6
+      "uniqueCards": 12,
+      "medalTimeLimits": {
+        "bronze": 45,
+        "silver": 30,
+        "gold": 20
+      }
     },
     {
       "id": 2,
       "difficulty": "medium",
-      "uniqueCards": 12
+      "uniqueCards": 24,
+      "medalTimeLimits": {
+        "bronze": 120,
+        "silver": 75,
+        "gold": 50
+      }
     },
     {
       "id": 3,
       "difficulty": "hard",
-      "uniqueCards": 21
+      "uniqueCards": 42,
+      "medalTimeLimits": {
+        "bronze": 300,
+        "silver": 180,
+        "gold": 120
+      }
     }
   ],
   "highScores": [
