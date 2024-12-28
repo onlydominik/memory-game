@@ -1,7 +1,7 @@
 import './logoStyles.css';
 import { Link, NavLink } from 'react-router-dom';
 
-export default function Header() {
+const Header = () => {
   const navLinkBaseStyles = 'w-min text-lg sm:text-xl text-header-text';
 
   const getNavLinkClassName = ({ isActive }: { isActive: boolean }): string => {
@@ -45,4 +45,6 @@ export default function Header() {
       </div>
     </header>
   );
-}
+};
+
+export default Header;
