@@ -1,5 +1,5 @@
-import './logoStyles.css';
-import { Link, NavLink } from 'react-router-dom';
+import { Logo } from './Logo/Logo';
+import { NavLink } from 'react-router-dom';
 
 const Header = () => {
   const navLinkBaseStyles = 'w-min text-lg sm:text-xl text-header-text';
@@ -19,13 +19,7 @@ const Header = () => {
       aria-label="Main Navigation"
     >
       <div className="w-3/4 max-w-xs py-2 pb-3 text-center bg-header-logoBg shadow-logoShadow rounded-b-[3rem]">
-        <Link
-          to={'/'}
-          className="block w-full text-2xl sm:text-3xl textLogoColor"
-          aria-label="Home"
-        >
-          MIND MELD
-        </Link>
+        <Logo isLink={true} />
       </div>
       <div className="flex gap-12 flex-col xs:flex-row sm:justify-between sm:px-10 sm:mt-[-1rem] sm:w-full">
         <NavLink
