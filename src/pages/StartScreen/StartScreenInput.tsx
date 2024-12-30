@@ -18,6 +18,7 @@ export const Input = ({
         }`}
         value={value}
         id={id}
+        name={id}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
         onFocus={onFocus}
