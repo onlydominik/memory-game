@@ -23,7 +23,7 @@ const Header = () => {
       </div>
       <div className="flex gap-12 flex-col xs:flex-row sm:justify-between sm:px-10 sm:mt-[-1rem] sm:w-full">
         <NavLink
-          to={'/challenges'}
+          to={'/'}
           className={getNavLinkClassName}
           aria-label="Challenges"
         >
