@@ -1,21 +1,31 @@
-export type InputProps = {
+export interface InputProps {
   value: string;
   id: string;
   onChange: (value: string) => void;
   onBlur?: () => void;
   onFocus?: () => void;
   error?: string | null;
-};
+}
 
-export type Challenge = {
+export interface Challenge {
   id: number;
   difficulty: 'easy' | 'medium' | 'hard';
   uniqueCards: 12 | 24 | 42;
-};
+  medalTtimeLimits: {
+    bronze: 45 | 120 | 300;
+    silver: 30 | 75 | 180;
+    gold: 20 | 50 | 120;
+  };
+}
+export type Challenges = Challenge[];
 
-export type HighscoresByChallenge = {
-  [challenge: string]: Highscore[];
-};
+export interface Image {
+  id: number;
+  path: string;
+  color: string;
+}
+
+export type Images = Image[];
 
 export type Highscore = {
   id: number;
@@ -23,11 +33,26 @@ export type Highscore = {
   time: number;
   medalScore: 0 | 1 | 2 | 3;
 };
+export type HighscoresByChallenge = {
+  easy: Highscore[];
+  medium: Highscore[];
+  hard: Highscore[];
+};
 
-export type GameContextValue = {
-  currentUser: {
-    id: number;
-    username: string;
-  } | null;
+export interface CurrentUser {
+  id: number;
+  username: string;
+}
+
+export interface GameContextStateValue {
+  challenges: Challenges;
   highscores: HighscoresByChallenge;
+  currentUser: CurrentUser;
+}
+
+export type FetchRequest<T> = { key: keyof T; url: string };
+export type FetchResult<T> = {
+  data: T | null;
+  error: Record<keyof T, unknown> | null;
+  loading: boolean;
 };
