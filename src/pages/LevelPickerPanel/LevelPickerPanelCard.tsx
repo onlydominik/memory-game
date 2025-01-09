@@ -80,7 +80,7 @@ const LevelPickerPanelCard = ({
         </div>
       </div>
       <Link
-        to="/"
+        to={`/level/${difficulty}`}
         aria-label={`Start challenge for ${difficulty} level`}
         className={`block w-full py-2 text-center text-2xl text-challenge-bg/50 ${difficultyClassBg}`}
       >

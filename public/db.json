@@ -1,93 +1,114 @@
 {
   "images": [
     {
-      "id": "1",
-      "path": "public/images/image1.jpg"
+      "id": 1,
+      "path": "/images/image1.webp",
+      "color": "accentRed"
     },
     {
-      "id": "2",
-      "path": "public/images/image2.jpg"
+      "id": 2,
+      "path": "/images/image2.webp",
+      "color": "accentGreen"
     },
     {
-      "id": "3",
-      "path": "public/images/image3.jpg"
+      "id": 3,
+      "path": "/images/image3.webp",
+      "color": "accentOrange"
     },
     {
-      "id": "4",
-      "path": "public/images/image4.jpg"
+      "id": 4,
+      "path": "/images/image4.webp",
+      "color": "accentBlue"
     },
     {
-      "id": "5",
-      "path": "public/images/image5.jpg"
+      "id": 5,
+      "path": "/images/image5.webp",
+      "color": "accentYellow"
     },
     {
-      "id": "6",
-      "path": "public/images/image6.jpg"
+      "id": 6,
+      "path": "/images/image6.webp",
+      "color": "accentPink"
     },
     {
-      "id": "7",
-      "path": "public/images/image7.jpg"
+      "id": 7,
+      "path": "/images/image7.webp",
+      "color": "accentPurple"
     },
     {
-      "id": "8",
-      "path": "public/images/image8.jpg"
+      "id": 8,
+      "path": "/images/image8.webp",
+      "color": "accentCyan"
     },
     {
-      "id": "9",
-      "path": "public/images/image9.jpg"
+      "id": 9,
+      "path": "/images/image9.webp",
+      "color": "accentLime"
     },
     {
-      "id": "10",
-      "path": "public/images/image10.jpg"
+      "id": 10,
+      "path": "/images/image10.webp",
+      "color": "accentTeal"
     },
     {
-      "id": "11",
-      "path": "public/images/image11.jpg"
+      "id": 11,
+      "path": "/images/image11.webp",
+      "color": "accentBrown"
     },
     {
-      "id": "12",
-      "path": "public/images/image12.jpg"
+      "id": 12,
+      "path": "/images/image12.webp",
+      "color": "accentIndigo"
     },
     {
-      "id": "13",
-      "path": "public/images/image13.jpg"
+      "id": 13,
+      "path": "/images/image13.webp",
+      "color": "accentGold"
     },
     {
-      "id": "14",
-      "path": "public/images/image14.jpg"
+      "id": 14,
+      "path": "/images/image14.webp",
+      "color": "accentMagenta"
     },
     {
-      "id": "15",
-      "path": "public/images/image15.jpg"
+      "id": 15,
+      "path": "/images/image15.webp",
+      "color": "accentKhaki"
     },
     {
-      "id": "16",
-      "path": "public/images/image16.jpg"
+      "id": 16,
+      "path": "/images/image16.webp",
+      "color": "accentNavy"
     },
     {
-      "id": "17",
-      "path": "public/images/image17.jpg"
+      "id": 17,
+      "path": "/images/image17.webp",
+      "color": "accentTan"
     },
     {
-      "id": "18",
-      "path": "public/images/image18.jpg"
+      "id": 18,
+      "path": "/images/image18.webp",
+      "color": "accentSilver"
     },
     {
-      "id": "19",
-      "path": "public/images/image19.jpg"
+      "id": 19,
+      "path": "/images/image19.webp",
+      "color": "accentCrimson"
     },
     {
-      "id": "20",
-      "path": "public/images/image20.jpg"
+      "id": 20,
+      "path": "/images/image20.webp",
+      "color": "accentOlive"
     },
     {
-      "id": "21",
-      "path": "public/images/image21.jpg"
+      "id": 21,
+      "path": "/images/image21.webp",
+      "color": "accentAqua"
     }
   ],
   "challenges": [
     {
-      "id": "1",
+      "id": "0",
       "difficulty": "easy",
       "uniqueCards": 12,
       "medalTimeLimits": {
@@ -97,7 +118,7 @@
       }
     },
     {
-      "id": "2",
+      "id": "1",
       "difficulty": "medium",
       "uniqueCards": 24,
       "medalTimeLimits": {
@@ -107,7 +128,7 @@
       }
     },
     {
-      "id": "3",
+      "id": "2",
       "difficulty": "hard",
       "uniqueCards": 42,
       "medalTimeLimits": {
@@ -117,17 +138,52 @@
       }
     }
   ],
-  "highScores": [
-    {
-      "id": "1",
-      "username": "",
-      "challenge": "",
-      "time": "",
-      "medalScore": ""
-    }
-  ],
+  "highscores": {
+    "easy": [
+      {
+        "id": 1,
+        "username": "player1",
+        "time": 10,
+        "medalScore": 0
+      },
+      {
+        "id": 2,
+        "username": "player2",
+        "time": 15,
+        "medalScore": 3
+      },
+      {
+        "id": 3,
+        "username": "player3",
+        "time": 20,
+        "medalScore": 2
+      }
+    ],
+    "medium": [
+      {
+        "id": 1,
+        "username": "player1",
+        "time": 20,
+        "medalScore": 3
+      },
+      {
+        "id": 2,
+        "username": "player4",
+        "time": 10,
+        "medalScore": 2
+      }
+    ],
+    "hard": [
+      {
+        "id": 1,
+        "username": "player4",
+        "time": 10,
+        "medalScore": 1
+      }
+    ]
+  },
   "currentUser": {
     "id": 1,
-    "username": null
+    "username": "Dominik"
   }
 }
