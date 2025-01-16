@@ -1,12 +1,15 @@
-import { createContext, useReducer, useEffect } from 'react';
+import { createContext, useReducer, useEffect, useContext } from 'react';
 import { useFetch } from '../hooks/useFetch';
-import { gameReducer, GameActionType } from '../reducer/gameReducer';
+import { gameReducer } from '../reducer/gameReducer/gameReducer';
 import { FetchRequest, GameContextStateValue } from '../types';
+import { GameDispatch } from '../reducer/gameReducer/gameReducerTypes';
 
 interface GameContextType {
   state: GameContextStateValue;
-  dispatch: React.Dispatch<GameActionType>;
+  dispatch: GameDispatch;
 }
+
+const GameContext = createContext<GameContextType | null>(null);
 
 const initialState: GameContextStateValue = {
   currentUser: {
@@ -21,9 +24,7 @@ const initialState: GameContextStateValue = {
   challenges: [],
 };
 
-const GameContext = createContext<GameContextType | undefined>(undefined);
-
-const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
+const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
   const requests: FetchRequest<GameContextStateValue>[] = [
@@ -32,11 +33,10 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
     { key: 'currentUser', url: 'http://localhost:3000/currentUser' },
   ];
 
-  const { data, loading, error } = useFetch<GameContextStateValue>(requests);
-  console.log(loading, error);
+  const { data } = useFetch<GameContextStateValue>(requests);
 
   const { highscores, challenges, currentUser } =
-    (data as GameContextStateValue) ?? initialState;
+    (data as GameContextStateValue) ?? state;
 
   useEffect(() => {
     if (currentUser || highscores || challenges) {
@@ -58,4 +58,10 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export { GameContext, GameContextProvider };
+export const useGame = () => {
+  const context = useContext(GameContext);
+  if (!context) throw new Error('useGame must be used within GameProvider');
+  return context;
+};
+
+export { GameContext, GameProvider };

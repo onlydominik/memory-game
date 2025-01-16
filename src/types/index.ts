@@ -11,7 +11,7 @@ export interface Challenge {
   id: number;
   difficulty: 'easy' | 'medium' | 'hard';
   uniqueCards: 12 | 24 | 42;
-  medalTtimeLimits: {
+  medalTimeLimits: {
     bronze: 45 | 120 | 300;
     silver: 30 | 75 | 180;
     gold: 20 | 50 | 120;
@@ -30,7 +30,10 @@ export type Images = Image[];
 export type Highscore = {
   id: number;
   username: string;
+  difficulty: 'easy' | 'medium' | 'hard';
   time: number;
+  moves: number;
+  missed: number;
   medalScore: 0 | 1 | 2 | 3;
 };
 export type HighscoresByChallenge = {
@@ -56,3 +59,7 @@ export type FetchResult<T> = {
   error: Record<keyof T, unknown> | null;
   loading: boolean;
 };
+
+//GAME PANEL TYPES
+export type TimeoutId = ReturnType<typeof setTimeout>;
+export type UseRefTimeout = React.MutableRefObject<TimeoutId | undefined>;

@@ -6,7 +6,10 @@ const colors = {
   levelHard: '#D30000',
   white: '#FFFFFF',
   dark: '#1F3D4A',
+  accentDark: '#0F2027',
+  black: '#000000',
   gray: '#CECECE',
+  logoTheme: '#f26419',
 };
 
 export default {
@@ -16,6 +19,7 @@ export default {
       white: colors.white,
       dark: colors.dark,
       gray: colors.gray,
+      logoTheme: colors.logoTheme,
       accentRed: '#FF0000',
       accentGreen: '#119200',
       accentOrange: '#D38900',
@@ -60,6 +64,11 @@ export default {
           bg: colors.dark,
         },
       },
+      gameStatPanel: {
+        textPrimary: colors.black,
+        textSecondary: colors.white,
+        bgAccent: colors.accentDark,
+      },
     },
 
     extend: {
@@ -71,8 +80,9 @@ export default {
         gradientBody: 'linear-gradient(#0F2027, #1F3D4A, #0F2027)',
       },
       boxShadow: {
-        logoShadow:
+        smoothShadow:
           '0px 13px 27px -5px rgba(50, 50, 93, 0.25), 0px 8px 16px -8px rgba(0, 0, 0, 0.3)',
+        modalShadow: 'box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);',
       },
       screens: {
         xs: '15rem',
