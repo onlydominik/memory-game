@@ -1,107 +1,107 @@
 {
   "images": [
     {
-      "id": 1,
+      "id": "1",
       "path": "/images/image1.webp",
       "color": "accentRed"
     },
     {
-      "id": 2,
+      "id": "2",
       "path": "/images/image2.webp",
       "color": "accentGreen"
     },
     {
-      "id": 3,
+      "id": "3",
       "path": "/images/image3.webp",
       "color": "accentOrange"
     },
     {
-      "id": 4,
+      "id": "4",
       "path": "/images/image4.webp",
       "color": "accentBlue"
     },
     {
-      "id": 5,
+      "id": "5",
       "path": "/images/image5.webp",
       "color": "accentYellow"
     },
     {
-      "id": 6,
+      "id": "6",
       "path": "/images/image6.webp",
       "color": "accentPink"
     },
     {
-      "id": 7,
+      "id": "7",
       "path": "/images/image7.webp",
       "color": "accentPurple"
     },
     {
-      "id": 8,
+      "id": "8",
       "path": "/images/image8.webp",
       "color": "accentCyan"
     },
     {
-      "id": 9,
+      "id": "9",
       "path": "/images/image9.webp",
       "color": "accentLime"
     },
     {
-      "id": 10,
+      "id": "10",
       "path": "/images/image10.webp",
       "color": "accentTeal"
     },
     {
-      "id": 11,
+      "id": "11",
       "path": "/images/image11.webp",
       "color": "accentBrown"
     },
     {
-      "id": 12,
+      "id": "12",
       "path": "/images/image12.webp",
       "color": "accentIndigo"
     },
     {
-      "id": 13,
+      "id": "13",
       "path": "/images/image13.webp",
       "color": "accentGold"
     },
     {
-      "id": 14,
+      "id": "14",
       "path": "/images/image14.webp",
       "color": "accentMagenta"
     },
     {
-      "id": 15,
+      "id": "15",
       "path": "/images/image15.webp",
       "color": "accentKhaki"
     },
     {
-      "id": 16,
+      "id": "16",
       "path": "/images/image16.webp",
       "color": "accentNavy"
     },
     {
-      "id": 17,
+      "id": "17",
       "path": "/images/image17.webp",
       "color": "accentTan"
     },
     {
-      "id": 18,
+      "id": "18",
       "path": "/images/image18.webp",
       "color": "accentSilver"
     },
     {
-      "id": 19,
+      "id": "19",
       "path": "/images/image19.webp",
       "color": "accentCrimson"
     },
     {
-      "id": 20,
+      "id": "20",
       "path": "/images/image20.webp",
       "color": "accentOlive"
     },
     {
-      "id": 21,
+      "id": "21",
       "path": "/images/image21.webp",
       "color": "accentAqua"
     }
@@ -141,44 +141,120 @@
   "highscores": {
     "easy": [
       {
-        "id": 1,
-        "username": "player1",
-        "time": 10,
-        "medalScore": 0
-      },
-      {
-        "id": 2,
-        "username": "player2",
-        "time": 15,
+        "username": "Dominik",
+        "time": 9,
+        "moves": 9,
+        "missed": 3,
+        "date": "2025-01-15T16:42:44.622Z",
         "medalScore": 3
       },
       {
-        "id": 3,
-        "username": "player3",
-        "time": 20,
-        "medalScore": 2
+        "username": "Dominik",
+        "time": 10,
+        "moves": 9,
+        "missed": 3,
+        "date": "2025-01-16T10:37:12.716Z",
+        "medalScore": 3
+      },
+      {
+        "username": "Dominik",
+        "time": 12,
+        "moves": 9,
+        "missed": 3,
+        "date": "2025-01-14T19:47:22.448Z",
+        "medalScore": 3
+      },
+      {
+        "username": "Dominik",
+        "time": 12,
+        "moves": 9,
+        "missed": 3,
+        "date": "Wed Jan 15 2025 17:29:59 GMT+0100 (czas środkowoeuropejski standardowy)",
+        "medalScore": 3
+      },
+      {
+        "username": "Dominik",
+        "time": 11,
+        "moves": 10,
+        "missed": 4,
+        "date": "2025-01-16T10:20:00.573Z",
+        "medalScore": 3
+      },
+      {
+        "username": "Dominik",
+        "time": 12,
+        "moves": 10,
+        "missed": 4,
+        "date": "2025-01-15T17:10:46.601Z",
+        "medalScore": 3
+      },
+      {
+        "username": "Dominik",
+        "time": 12,
+        "moves": 10,
+        "missed": 4,
+        "date": "2025-01-16T10:39:05.559Z",
+        "medalScore": 3
+      },
+      {
+        "username": "Dominik",
+        "time": 11,
+        "moves": 11,
+        "missed": 5,
+        "date": "2025-01-16T10:32:59.702Z",
+        "medalScore": 3
+      },
+      {
+        "username": "Dominik",
+        "time": 12,
+        "moves": 11,
+        "missed": 5,
+        "date": "2025-01-14T19:46:07.316Z",
+        "medalScore": 3
+      },
+      {
+        "username": "Dominik",
+        "time": 12,
+        "moves": 12,
+        "missed": 6,
+        "date": "2025-01-15T17:08:25.622Z",
+        "medalScore": 3
       }
     ],
     "medium": [
       {
-        "id": 1,
-        "username": "player1",
-        "time": 20,
+        "username": "Dominik",
+        "time": 49,
+        "moves": 38,
+        "missed": 26,
+        "date": "2025-01-15T17:41:49.990Z",
         "medalScore": 3
       },
       {
-        "id": 2,
-        "username": "player4",
-        "time": 10,
+        "username": "Dominik",
+        "time": 85,
+        "moves": 38,
+        "missed": 26,
+        "date": "2025-01-15T17:44:56.872Z",
+        "medalScore": 1
+      },
+      {
+        "username": "Dominik",
+        "time": 64,
+        "moves": 43,
+        "missed": 31,
+        "date": "2025-01-15T17:43:24.624Z",
         "medalScore": 2
       }
     ],
     "hard": [
       {
-        "id": 1,
-        "username": "player4",
-        "time": 10,
-        "medalScore": 1
+        "username": "Dominik",
+        "time": 99,
+        "moves": 70,
+        "missed": 49,
+        "date": "2025-01-16T10:46:36.626Z",
+        "medalScore": 3
       }
     ]
   },
