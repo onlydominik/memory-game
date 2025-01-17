@@ -5,7 +5,9 @@ import StartScreen, {
 import RootLayout from './pages/RootLayout.tsx';
 import LevelPickerPanel from './pages/LevelPickerPanel/LevelPickerPanel.tsx';
 import { loader as PlayAreaLoader } from './pages/GamePanel/PlayArea/PlayArea.loader.tsx';
+import { loader as HighscoresScreenLoader } from './pages/HighscoresScreen/HighscoresScreen.loader.tsx';
 import GamePanel from './pages/GamePanel/GamePanel.tsx';
+import HighscoresScreen from './pages/HighscoresScreen/HighscoresScreen.tsx';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +17,11 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <LevelPickerPanel />,
+      },
+      {
+        path: 'highscores',
+        element: <HighscoresScreen />,
+        loader: HighscoresScreenLoader,
       },
       {
         path: 'level/:difficulty',

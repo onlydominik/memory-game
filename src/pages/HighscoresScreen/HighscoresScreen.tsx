@@ -1,0 +1,75 @@
+import { useLoaderData } from 'react-router-dom';
+import { Highscore } from '../../types';
+import {
+  difficultyClassMap,
+  medalScoreTimeColors,
+} from '../../utils/gameStyleUtils';
+import MedalIcons from '../LevelPickerPanel/MedalIcons';
+import { formatTime } from '../GamePanel/GameLogicUtils';
+const HighscoresScreen = () => {
+  const data: Record<string, Highscore[]> = useLoaderData();
+
+  return (
+    <div className="max-w-screen-sm mx-auto">
+      {Object.entries(data).map(
+        ([difficulty, scores]: [string, Highscore[]]) => {
+          const difficultyKey = difficulty as keyof typeof difficultyClassMap;
+          const difficultyClassBg = difficultyClassMap[difficultyKey]?.bg || '';
+          const timeColorClass =
+            scores.length > 0 ? medalScoreTimeColors[scores[0].medalScore] : '';
+          return (
+            <div key={difficulty} className="mb-8">
+              <div
+                className={`w-48 py-3 mb-2 text-center rounded-se-[4rem] ${difficultyClassBg}`}
+              >
+                <h2 className={`ml-[-1rem] text-2xl font-bold text-white`}>
+                  {difficulty.toUpperCase()}
+                </h2>
+              </div>
+              {scores.length === 0 && (
+                <div className="text-xl py-3 px-4 bg-white text-dark">
+                  You haven't completed this level yet
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 gap-4">
+                {scores
+                  .sort((a, b) => {
+                    if (a.medalScore === b.medalScore) {
+                      return a.time - b.time;
+                    }
+                    return b.medalScore - a.medalScore;
+                  })
+                  .map((score, index) => (
+                    <div
+                      key={index}
+                      className="p-4 rounded bg-white shadow-smoothShadow"
+                    >
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <div className="flex items-center gap-8 mx-auto sm:ml-0 sm:mr-auto ">
+                          <span className="text-xl">{score.username}</span>
+                          <span className={`text-2xl ${timeColorClass}`}>
+                            {formatTime(score.time)}
+                          </span>
+                          <span className="flex">
+                            <MedalIcons medalScore={score.medalScore} />
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-center gap-4">
+                          <span>Moves: {score.moves}</span>
+                          <span>Missed: {score.missed}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          );
+        }
+      )}
+    </div>
+  );
+};
+
+HighscoresScreen.displayName = 'HighscoresScreen';
+export default HighscoresScreen;

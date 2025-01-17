@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <header
-      className="flex flex-col items-center gap-4 sm:gap-0 pb-3 sm:pb-8 mx-auto max-w-2xl bg-header-bg rounded-b-3xl sm:rounded-3xl"
+      className="flex flex-col items-center gap-4 sm:gap-0 pb-3 sm:pb-8 mb-8 mx-auto max-w-2xl bg-header-bg rounded-b-3xl sm:rounded-3xl"
       role="navigation"
       aria-label="Main Navigation"
     >

@@ -44,7 +44,7 @@ const gameReducer = (
               }
               return a.moves - b.moves;
             })
-            .slice(0, 10),
+            .slice(0, 4),
         },
       };
 

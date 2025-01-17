@@ -1,36 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useMemo } from 'react';
 import { Challenge, HighscoresByChallenge } from '../../types';
 import MedalIcons from './MedalIcons';
-
-enum Difficulty {
-  Easy = 'Easy',
-  Medium = 'Medium',
-  Hard = 'Hard',
-}
-
-const difficultyClassMap: Record<Difficulty, { text: string; bg: string }> = {
-  [Difficulty.Easy]: {
-    text: 'text-challenge-levelEasy',
-    bg: 'bg-challenge-levelEasy',
-  },
-  [Difficulty.Medium]: {
-    text: 'text-challenge-levelMedium',
-    bg: 'bg-challenge-levelMedium',
-  },
-  [Difficulty.Hard]: {
-    text: 'text-challenge-levelHard',
-    bg: 'bg-challenge-levelHard',
-  },
-};
-
-const medalScoreTimeColors: { [key: number]: string } = {
-  0: 'text-challenge-text',
-  1: 'text-accentRed',
-  2: 'text-accentOrange',
-  3: 'text-accentGreen',
-};
-
+import {
+  difficultyClassMap,
+  medalScoreTimeColors,
+} from '../../utils/gameStyleUtils';
 const LevelPickerPanelCard = ({
   challenge,
   highscores,
@@ -45,18 +19,9 @@ const LevelPickerPanelCard = ({
     medalScore: 0,
   };
 
-  const capitalizeFirst = (str: string) => {
-    return str ? str[0].toUpperCase() + str.slice(1) : '';
-  };
+  const difficultyClassText = difficultyClassMap[difficulty].text || '';
 
-  const difficultyCapitalized = useMemo(() => {
-    return capitalizeFirst(difficulty) as keyof typeof difficultyClassMap;
-  }, [difficulty]);
-
-  const difficultyClassText =
-    difficultyClassMap[difficultyCapitalized].text || '';
-
-  const difficultyClassBg = difficultyClassMap[difficultyCapitalized].bg || '';
+  const difficultyClassBg = difficultyClassMap[difficulty].bg || '';
 
   const timeColorClass = medalScoreTimeColors[highscore.medalScore];
 

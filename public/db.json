@@ -112,9 +112,9 @@
       "difficulty": "easy",
       "uniqueCards": 12,
       "medalTimeLimits": {
-        "bronze": 45,
-        "silver": 30,
-        "gold": 20
+        "bronze": 25,
+        "silver": 15,
+        "gold": 11
       }
     },
     {
@@ -141,125 +141,52 @@
   "highscores": {
     "easy": [
       {
-        "username": "Dominik",
-        "time": 9,
-        "moves": 9,
-        "missed": 3,
-        "date": "2025-01-15T16:42:44.622Z",
-        "medalScore": 3
-      },
-      {
-        "username": "Dominik",
+        "username": "Natusia",
         "time": 10,
-        "moves": 9,
-        "missed": 3,
-        "date": "2025-01-16T10:37:12.716Z",
-        "medalScore": 3
-      },
-      {
-        "username": "Dominik",
-        "time": 12,
-        "moves": 9,
-        "missed": 3,
-        "date": "2025-01-14T19:47:22.448Z",
-        "medalScore": 3
-      },
-      {
-        "username": "Dominik",
-        "time": 12,
-        "moves": 9,
-        "missed": 3,
-        "date": "Wed Jan 15 2025 17:29:59 GMT+0100 (czas środkowoeuropejski standardowy)",
-        "medalScore": 3
-      },
-      {
-        "username": "Dominik",
-        "time": 11,
-        "moves": 10,
-        "missed": 4,
-        "date": "2025-01-16T10:20:00.573Z",
-        "medalScore": 3
-      },
-      {
-        "username": "Dominik",
-        "time": 12,
-        "moves": 10,
-        "missed": 4,
-        "date": "2025-01-15T17:10:46.601Z",
-        "medalScore": 3
-      },
-      {
-        "username": "Dominik",
-        "time": 12,
-        "moves": 10,
-        "missed": 4,
-        "date": "2025-01-16T10:39:05.559Z",
-        "medalScore": 3
-      },
-      {
-        "username": "Dominik",
-        "time": 11,
         "moves": 11,
         "missed": 5,
-        "date": "2025-01-16T10:32:59.702Z",
+        "date": "2025-01-17T22:29:55.610Z",
         "medalScore": 3
       },
       {
-        "username": "Dominik",
-        "time": 12,
+        "username": "Natusia",
+        "time": 13,
         "moves": 11,
         "missed": 5,
-        "date": "2025-01-14T19:46:07.316Z",
+        "date": "2025-01-17T21:29:02.315Z",
+        "medalScore": 3
+      },
+      {
+        "username": "Natusia",
+        "time": 14,
+        "moves": 11,
+        "missed": 5,
+        "date": "2025-01-17T21:29:37.094Z",
         "medalScore": 3
       },
       {
         "username": "Dominik",
-        "time": 12,
-        "moves": 12,
-        "missed": 6,
-        "date": "2025-01-15T17:08:25.622Z",
+        "time": 14,
+        "moves": 13,
+        "missed": 7,
+        "date": "2025-01-17T21:28:18.415Z",
         "medalScore": 3
       }
     ],
     "medium": [
       {
-        "username": "Dominik",
+        "username": "Natusia",
         "time": 49,
-        "moves": 38,
-        "missed": 26,
-        "date": "2025-01-15T17:41:49.990Z",
+        "moves": 40,
+        "missed": 28,
+        "date": "2025-01-17T22:29:34.515Z",
         "medalScore": 3
-      },
-      {
-        "username": "Dominik",
-        "time": 85,
-        "moves": 38,
-        "missed": 26,
-        "date": "2025-01-15T17:44:56.872Z",
-        "medalScore": 1
-      },
-      {
-        "username": "Dominik",
-        "time": 64,
-        "moves": 43,
-        "missed": 31,
-        "date": "2025-01-15T17:43:24.624Z",
-        "medalScore": 2
       }
     ],
-    "hard": [
-      {
-        "username": "Dominik",
-        "time": 99,
-        "moves": 70,
-        "missed": 49,
-        "date": "2025-01-16T10:46:36.626Z",
-        "medalScore": 3
-      }
-    ]
+    "hard": []
   },
   "currentUser": {
     "id": 1,
-    "username": "Dominik"
+    "username": "Natusia"
   }
 }

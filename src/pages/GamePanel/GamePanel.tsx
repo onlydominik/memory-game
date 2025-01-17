@@ -12,7 +12,7 @@ const GamePanel = () => {
   );
   const { moves, missed, gameStatus } = gameSessionState;
   return (
-    <div className="flex flex-col-reverse gap-8 items-center justify-center mx-3 mt-10">
+    <div className="flex flex-col-reverse gap-8 items-center justify-center mx-3">
       <GameOptionPanel
         gameStatus={gameStatus}
         moves={moves}
