@@ -1,6 +1,17 @@
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../../firebase';
+import { Images } from '../../../types';
+
 const loader = async () => {
-  const res = await fetch('http://localhost:3000/images');
-  return res;
+  const imagesCollection = collection(db, 'images');
+  const imagesSnapshot = await getDocs(imagesCollection);
+  const images: Images = imagesSnapshot.docs
+    .map((doc) => {
+      const { imagesMap } = doc.data();
+      return imagesMap;
+    })
+    .flat();
+  return images;
 };
 
 export { loader };

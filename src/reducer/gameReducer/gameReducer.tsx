@@ -1,6 +1,19 @@
 import { GameContextStateValue } from '../../types';
 import { GameAction, actionTypes } from './gameReducerTypes';
 
+const initialState: GameContextStateValue = {
+  currentUser: {
+    username: '',
+  },
+  highscores: {
+    easy: [],
+    medium: [],
+    hard: [],
+  },
+  challenges: [],
+  isLoading: true,
+};
+
 const gameReducer = (
   state: GameContextStateValue,
   action: GameAction
@@ -12,6 +25,13 @@ const gameReducer = (
         currentUser: action.payload.currentUser ?? state.currentUser,
         highscores: action.payload.highscores ?? state.highscores,
         challenges: action.payload.challenges ?? state.challenges,
+        isLoading: action.payload.isLoading,
+      };
+
+    case actionTypes.SET_IS_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload.isLoading,
       };
 
     case actionTypes.SET_USER:
@@ -34,15 +54,14 @@ const gameReducer = (
               time,
               moves,
               missed,
-              date: new Date().toISOString(),
               medalScore,
             },
           ]
             .sort((a, b) => {
-              if (a.moves === b.moves) {
+              if (a.time === b.time) {
                 return a.time - b.time;
               }
-              return a.moves - b.moves;
+              return a.time - b.time;
             })
             .slice(0, 4),
         },
@@ -53,4 +72,4 @@ const gameReducer = (
   }
 };
 
-export { gameReducer, actionTypes };
+export { gameReducer, actionTypes, initialState };

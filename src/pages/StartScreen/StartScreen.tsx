@@ -2,6 +2,8 @@ import { redirect } from 'react-router-dom';
 import { ActionFunction } from 'react-router-dom';
 import StartScreenForm from './StartScreenForm.tsx';
 import { Logo } from '../../components/Logo/Logo.tsx';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase.ts';
 
 const StartScreen = () => {
   return (
@@ -23,29 +25,15 @@ export const action: ActionFunction = async ({ request }) => {
     const data = await request.formData();
     const username = (data.get('username') as string) || null;
 
-    const body = {
-      id: 1,
-      username: username,
-    };
-
-    const res = await fetch('http://localhost:3000/currentUser', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    if (!res.ok) {
-      return {
-        status: 400,
-        statusText: 'Failed to save username',
-      };
-    }
-
+    const usernameDoc = doc(db, 'currentUser', 'username');
+    await updateDoc(usernameDoc, { username: username });
     return redirect('/');
-  } catch (error: any) {
-    console.error('Error occurred:', error?.message || error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error occurred:', error.message);
+    } else {
+      console.error('Error occurred:', error);
+    }
     return {
       status: 500,
       statusText: 'Internal Server Error: Unable to connect to server',

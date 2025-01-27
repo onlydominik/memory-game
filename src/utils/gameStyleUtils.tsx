@@ -20,7 +20,7 @@ const difficultyClassMap: Record<Difficulty, { text: string; bg: string }> = {
 };
 
 const medalScoreTimeColors: { [key: number]: string } = {
-  0: 'text-challenge-text',
+  0: 'text-accentRed',
   1: 'text-accentRed',
   2: 'text-accentOrange',
   3: 'text-accentGreen',

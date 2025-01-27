@@ -7,6 +7,7 @@ export const actionTypes = {
   SET_HIGHSCORES: 'SET_HIGHSCORES',
   SET_CHALLENGES: 'SET_CHALLENGES',
   SET_ALL_DATA: 'SET_ALL_DATA',
+  SET_IS_LOADING: 'SET_IS_LOADING',
 } as const;
 
 interface SetUserAction {
@@ -36,8 +37,14 @@ interface SetAllDataAction {
   payload: GameContextStateValue;
 }
 
+interface SetIsLoadingAction {
+  type: typeof actionTypes.SET_IS_LOADING;
+  payload: { isLoading: boolean };
+}
+
 export type GameAction =
   | SetUserAction
   | SetHighscoresAction
   | SetChallengesAction
-  | SetAllDataAction;
+  | SetAllDataAction
+  | SetIsLoadingAction;

@@ -8,7 +8,7 @@ export interface InputProps {
 }
 
 export interface Challenge {
-  id: number;
+  id: string;
   difficulty: 'easy' | 'medium' | 'hard';
   uniqueCards: 12 | 24 | 42;
   medalTimeLimits: {
@@ -43,7 +43,6 @@ export type HighscoresByChallenge = {
 };
 
 export interface CurrentUser {
-  id: number;
   username: string;
 }
 
@@ -51,6 +50,7 @@ export interface GameContextStateValue {
   challenges: Challenges;
   highscores: HighscoresByChallenge;
   currentUser: CurrentUser;
+  isLoading: boolean;
 }
 
 export type FetchRequest<T> = { key: keyof T; url: string };

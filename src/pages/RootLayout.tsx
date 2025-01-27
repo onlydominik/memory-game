@@ -4,7 +4,7 @@ import { GameProvider } from '../context/GameContext';
 
 const RootLayout = () => {
   return (
-    <div className="relative max-w-screen-lg min-h-screen sm:pt-8 mx-auto">
+    <div className="relative max-w-screen-lg min-h-screen sm:pt-8 pb-10 mx-auto">
       <Header />
       <GameProvider>
         <Outlet />

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { pushData } from '../pages/GamePanel/GameLogicUtils';
 import { UseRefTimeout } from '../types';
 import {
   GameSessionState,
@@ -7,6 +6,8 @@ import {
 } from '../reducer/gameSessionReducer/gameSessionReducerTypes';
 import { GameDispatch } from '../reducer/gameReducer/gameReducerTypes';
 import { Challenge, GameContextStateValue } from '../types';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 interface UseGameLogicProps {
   gameSessionState: GameSessionState;
@@ -72,23 +73,50 @@ const useGameLogic = ({
         gameSessionState.time,
         activeChallenge.medalTimeLimits
       );
+      const newHighscore = {
+        username: gameCoreState.currentUser.username,
+        difficulty,
+        time: gameSessionState.time,
+        moves: gameSessionState.moves,
+        missed: gameSessionState.missed,
+        medalScore,
+      };
       gameCoreDispatch({
         type: 'SET_HIGHSCORES',
-        payload: {
-          username: gameCoreState.currentUser.username,
-          difficulty,
-          time: gameSessionState.time,
-          moves: gameSessionState.moves,
-          missed: gameSessionState.missed,
-          medalScore,
-        },
+        payload: newHighscore,
       });
+
+      const addHighscoretoFirestore = async () => {
+        try {
+          const difficultyRef = doc(db, 'highscores', difficulty);
+          const fieldValue = `${difficulty}Scores`;
+
+          const snapshot = await getDoc(difficultyRef);
+          const currentHighscores = snapshot.exists()
+            ? snapshot.data()[fieldValue] || []
+            : [];
+
+          const newHighscoreDestruct = { ...newHighscore };
+          const updatedHighscores = [...currentHighscores, newHighscoreDestruct]
+            .sort((a, b) => {
+              if (a.moves === b.moves) {
+                return a.time - b.time;
+              }
+              return a.moves - b.moves;
+            })
+            .slice(0, 4);
+
+          await updateDoc(difficultyRef, {
+            [fieldValue]: updatedHighscores,
+          });
+        } catch (error) {
+          console.error('Error adding highscore:', error);
+        }
+      };
+
+      addHighscoretoFirestore();
     }
   }, [gameSessionState.gameStatus, gameSessionState.time]);
-  useEffect(() => {
-    if (gameSessionState.gameStatus === 'win')
-      pushData(gameCoreState.highscores);
-  }, [gameCoreState.highscores]);
 };
 
 export { useGameLogic };
