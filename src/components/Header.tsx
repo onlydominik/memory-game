@@ -2,19 +2,19 @@ import { Logo } from './Logo/Logo';
 import { NavLink } from 'react-router-dom';
 
 const Header = () => {
-  const navLinkBaseStyles = 'w-min text-lg sm:text-xl text-header-text';
+  const navLinkBaseStyles = 'w-min text-lg sm:text-xl ';
 
   const getNavLinkClassName = ({ isActive }: { isActive: boolean }): string => {
     return `${navLinkBaseStyles} ${
       isActive
-        ? 'underline underline-offset-8 decoration-1 text-header-textAccent'
-        : ''
+        ? 'underline underline-offset-8 decoration-1 text-header-textAccent hover:text-header-textAccent/100'
+        : 'text-header-text hover:text-logoTheme/70'
     }`;
   };
 
   return (
     <header
-      className="flex flex-col items-center gap-4 sm:gap-0 pb-3 sm:pb-8 mb-8 mx-auto max-w-2xl bg-header-bg rounded-b-3xl sm:rounded-3xl"
+      className="flex flex-col items-center gap-4 sm:gap-0 pb-3 sm:pb-8 mb-8 mx-auto max-w-2xl bg-header-bg rounded-b-3xl sm:rounded-3xl border border-dar"
       role="navigation"
       aria-label="Main Navigation"
     >
@@ -40,5 +40,7 @@ const Header = () => {
     </header>
   );
 };
+
+Header.displayName = 'Header';
 
 export default Header;

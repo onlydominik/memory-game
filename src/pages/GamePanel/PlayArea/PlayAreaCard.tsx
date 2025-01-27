@@ -9,18 +9,19 @@ interface PlayAreaCardProps {
   color: string;
   handleClick: (event: React.MouseEvent<HTMLDivElement>) => void;
   isFlipped: boolean;
+  isMatched: boolean;
 }
 
 const PlayAreaCard = memo<PlayAreaCardProps>(
-  ({ id, path, color, handleClick, isFlipped }) => {
+  ({ id, path, color, handleClick, isFlipped, isMatched }) => {
     return (
       <div
         onClick={handleClick}
         className={`flex items-center justify-center w-full aspect-square border-2 md:border-3 xl:border-4 rounded-lg ${
           styles.PlayAreaCard
-        } ${
-          isFlipped
-            ? `bg-white ${colorVariants[color]}`
+        } ${isMatched ? 'opacity-40 transition-opacity' : ''} ${
+          isFlipped || isMatched
+            ? `bg-white cursor-default ${colorVariants[color]}`
             : colorVariants['disabled']
         }`}
         role="button"
@@ -28,15 +29,24 @@ const PlayAreaCard = memo<PlayAreaCardProps>(
         <img
           width="40"
           height="40"
-          className={`w-3/4 md:w-1/2 ${isFlipped ? '' : 'md:w-3/4'}`}
-          src={isFlipped ? path : questionMark}
-          alt={isFlipped ? `Card symbol with id: ${id}` : 'Hidden card'}
+          className={`w-3/4 md:w-1/2 ${
+            isFlipped || isMatched ? '' : 'md:w-3/4'
+          }`}
+          src={isFlipped || isMatched ? path : questionMark}
+          alt={
+            isFlipped || isMatched
+              ? `Card symbol with id: ${id}`
+              : 'Hidden card'
+          }
           loading="lazy"
         />
       </div>
     );
   },
-  (prev, next) => prev.isFlipped === next.isFlipped
+  (prev, next) =>
+    prev.id === next.id &&
+    prev.isFlipped === next.isFlipped &&
+    prev.color === next.color
 );
 
 PlayAreaCard.displayName = 'PlayAreaCard';

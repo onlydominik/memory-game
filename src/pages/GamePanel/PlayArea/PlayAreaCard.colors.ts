@@ -20,5 +20,5 @@ export const colorVariants: Record<string, string> = {
   accentCrimson: 'border-accentCrimson',
   accentOlive: 'border-accentOlive',
   accentAqua: 'border-accentAqua',
-  disabled: 'border-white bg-logoTheme',
+  disabled: 'border-white bg-logoTheme hover:opacity-90',
 };

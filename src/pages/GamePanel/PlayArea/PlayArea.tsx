@@ -4,6 +4,7 @@ import { useGame } from '../../../context/GameContext';
 import { Challenge, Images, TimeoutId, UseRefTimeout } from '../../../types';
 import PlayAreaCard from './PlayAreaCard';
 import styles from './PlayArea.module.css';
+import stylesLoader from './PlayAreaLoader.module.css';
 import { random, shuffleArray, generateIdForImages } from '../GameLogicUtils';
 import GameWinModal from '../../../components/GameWinModal/GameWinModal';
 import { useGameLogic } from '../../../hooks/useGameLogic';
@@ -41,11 +42,12 @@ const PlayArea = ({
     });
 
   const handleClick = (index: number, id: number) => {
-    if (gameSessionState.gameStatus === 'pending')
+    if (gameSessionState.gameStatus === 'pending') {
       gameSessionDispatch({ type: 'SET_GAME_STATUS', payload: 'inProgress' });
-    if (gameSessionState.flippedCards.some((card) => card.index === index))
+    }
+    if (gameSessionState.flippedCards.some((card) => card.index === index)) {
       return;
-
+    }
     gameSessionDispatch({ type: 'SET_FLIPPED_CARD', payload: { index, id } });
     clearTimeout(timeout.current);
   };
@@ -71,7 +73,8 @@ const PlayArea = ({
         return '';
     }
   }, [activeChallenge]);
-
+  if (gameCoreState.isLoading)
+    return <div className={`${stylesLoader.loader} mt-20`}></div>;
   return (
     <main className={`${styles.playAreaMain} ${levelClass}`}>
       {gameSessionState.gameStatus === 'win' ? (
@@ -84,11 +87,10 @@ const PlayArea = ({
             path={image.path}
             color={image.color}
             handleClick={() => handleClick(index, image.id)}
-            isFlipped={
-              gameSessionState.flippedCards.some(
-                (card) => card.index === index
-              ) || gameSessionState.matchedCards.includes(image.id)
-            }
+            isMatched={gameSessionState.matchedCards.includes(image.id)}
+            isFlipped={gameSessionState.flippedCards.some(
+              (card) => card.index === index
+            )}
           />
         ))
       )}

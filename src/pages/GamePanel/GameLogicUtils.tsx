@@ -1,5 +1,5 @@
-import { redirect } from 'react-router-dom';
-import { Challenge, HighscoresByChallenge } from '../../types';
+import { Challenge } from '../../types';
+
 const random = (): number => {
   return Math.floor(Math.random() * 21);
 };
@@ -30,33 +30,6 @@ const generateIdForImages = (
   return shuffleArray(newTable);
 };
 
-const pushData = async (data: HighscoresByChallenge) => {
-  try {
-    const res = await fetch('http://localhost:3000/highscores', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
-      return {
-        status: 400,
-        statusText: 'Failed to save highscore',
-      };
-    }
-
-    return redirect('/');
-  } catch (error: any) {
-    console.error('Error occurred:', error?.message || error);
-    return {
-      status: 500,
-      statusText: 'Internal Server Error: Unable to connect to server',
-    };
-  }
-};
-
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60)
     .toString()
@@ -64,4 +37,4 @@ const formatTime = (time: number) => {
   const seconds = (time % 60).toString().padStart(2, '0');
   return `${minutes}:${seconds}`;
 };
-export { random, shuffleArray, generateIdForImages, pushData, formatTime };
+export { random, shuffleArray, generateIdForImages, formatTime };

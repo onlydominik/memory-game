@@ -1,15 +1,17 @@
-import GameOptionPanel from '../../components/GameWinModal/GameStatPanel';
+import GameOptionPanel from '../../components/GameStatPanel/GameStatPanel';
 import PlayArea from './PlayArea/PlayArea';
 import {
   gameSessionReducer,
-  initialState,
+  initialState as initialStateSessionGame,
 } from '../../reducer/gameSessionReducer/gameSessionReducer';
 import { useReducer } from 'react';
+
 const GamePanel = () => {
   const [gameSessionState, gameSessionDispatch] = useReducer(
     gameSessionReducer,
-    initialState
+    initialStateSessionGame
   );
+
   const { moves, missed, gameStatus } = gameSessionState;
   return (
     <div className="flex flex-col-reverse gap-8 items-center justify-center mx-3">

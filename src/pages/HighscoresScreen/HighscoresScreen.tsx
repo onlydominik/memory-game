@@ -15,14 +15,14 @@ const HighscoresScreen = () => {
         ([difficulty, scores]: [string, Highscore[]]) => {
           const difficultyKey = difficulty as keyof typeof difficultyClassMap;
           const difficultyClassBg = difficultyClassMap[difficultyKey]?.bg || '';
-          const timeColorClass =
-            scores.length > 0 ? medalScoreTimeColors[scores[0].medalScore] : '';
           return (
             <div key={difficulty} className="mb-8">
               <div
                 className={`w-48 py-3 mb-2 text-center rounded-se-[4rem] ${difficultyClassBg}`}
               >
-                <h2 className={`ml-[-1rem] text-2xl font-bold text-white`}>
+                <h2
+                  className={`ml-[-1rem] text-2xl font-bold text-white cursor-default`}
+                >
                   {difficulty.toUpperCase()}
                 </h2>
               </div>
@@ -43,12 +43,16 @@ const HighscoresScreen = () => {
                   .map((score, index) => (
                     <div
                       key={index}
-                      className="p-4 rounded bg-white shadow-smoothShadow"
+                      className="p-4 rounded bg-white shadow-smoothShadow hover:outline-dotted hover:outline-[0.3rem] hover:outline-logoTheme cursor-default"
                     >
                       <div className="flex flex-col sm:flex-row gap-4">
                         <div className="flex items-center gap-8 mx-auto sm:ml-0 sm:mr-auto ">
                           <span className="text-xl">{score.username}</span>
-                          <span className={`text-2xl ${timeColorClass}`}>
+                          <span
+                            className={`text-2xl ${
+                              medalScoreTimeColors[score.medalScore]
+                            }`}
+                          >
                             {formatTime(score.time)}
                           </span>
                           <span className="flex">
@@ -72,4 +76,5 @@ const HighscoresScreen = () => {
 };
 
 HighscoresScreen.displayName = 'HighscoresScreen';
+
 export default HighscoresScreen;

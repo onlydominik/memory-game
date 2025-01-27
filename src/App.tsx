@@ -8,11 +8,13 @@ import { loader as PlayAreaLoader } from './pages/GamePanel/PlayArea/PlayArea.lo
 import { loader as HighscoresScreenLoader } from './pages/HighscoresScreen/HighscoresScreen.loader.tsx';
 import GamePanel from './pages/GamePanel/GamePanel.tsx';
 import HighscoresScreen from './pages/HighscoresScreen/HighscoresScreen.tsx';
+import Fallback from './components/Fallback.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <Fallback />,
     children: [
       {
         path: '',

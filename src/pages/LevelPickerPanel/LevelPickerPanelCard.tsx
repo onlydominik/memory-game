@@ -26,7 +26,7 @@ const LevelPickerPanelCard = ({
   const timeColorClass = medalScoreTimeColors[highscore.medalScore];
 
   return (
-    <article className="bg-challenge-bg rounded-lg overflow-hidden">
+    <article className="bg-challenge-bg rounded-lg overflow-hidden cursor-default">
       <div className="grid gap-10 md:gap-20 p-4">
         <div className="text-lg">
           <span className={`text-6xl mr-2 ${difficultyClassText}`}>
@@ -39,15 +39,19 @@ const LevelPickerPanelCard = ({
         </div>
         <div className="text-lg">
           YOUR RECORD
-          <span className={`ml-2 ${timeColorClass}`}>
-            {highscore.time != null ? `${highscore.time} s` : '---'}
+          <span
+            className={`ml-2 ${
+              highscore.time ? timeColorClass : 'text-challenge-text'
+            }`}
+          >
+            {highscore.time ? `${highscore.time} s` : '---'}
           </span>
         </div>
       </div>
       <Link
         to={`/level/${difficulty}`}
         aria-label={`Start challenge for ${difficulty} level`}
-        className={`block w-full py-2 text-center text-2xl text-challenge-bg/50 ${difficultyClassBg}`}
+        className={`block w-full py-2 text-center text-2xl text-challenge-bg/50 hover:text-white/90 ${difficultyClassBg}`}
       >
         START
       </Link>
