@@ -1,4 +1,4 @@
-import { InputProps } from '../../types';
+import { InputProps } from "../../../types";
 
 export const Input = ({
   value,
@@ -13,8 +13,8 @@ export const Input = ({
       <input
         className={`min-h-10 font-sans font-bold indent-4 border-solid border-[0.1rem] rounded-3xl ${
           error
-            ? 'border-accentRed focus-visible:outline-accentRed'
-            : 'border-gray focus:outline-dark focus:outline-offset-1'
+            ? "border-accentRed focus-visible:outline-accentRed"
+            : "border-gray focus:outline-dark focus:outline-offset-1"
         }`}
         value={value}
         id={id}
@@ -29,8 +29,7 @@ export const Input = ({
       {error ? (
         <p
           className="mt-2 font-sans text-xs sm:text-sm text-center text-accentRed"
-          id={`${id}-error`}
-        >
+          id={`${id}-error`}>
           {error}
         </p>
       ) : (

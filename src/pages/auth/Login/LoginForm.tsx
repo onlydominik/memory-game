@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Input } from './StartScreenInput';
-import { Form, useActionData } from 'react-router-dom';
 
-const StartScreenForm = () => {
-  const [username, setUsername] = useState('');
+interface LoginFormProps {
+  onSubmit: (email: string, password: string) => void;
+}
+
+const LoginForm = ({ onSubmit }: LoginFormProps) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const actionError = useActionData<{ statusText: string }>();
 
   const validateUsername = (value: string): string | null => {
     if (value.length < 3 || value.length > 18) {
@@ -16,68 +19,66 @@ const StartScreenForm = () => {
     return null;
   };
 
-  const onChangeHandler = (value: string): void => setUsername(value);
+  const onChangeHandler = (value: string): void => setEmail(value);
+  const onChangeHandlerPass = (value: string): void => setPassword(value);
 
-  const onBlurHandler = (): void => setError(validateUsername(username));
+  const onBlurHandler = (): void => setError(validateUsername(email));
+  const onBlurHandlerPass = (): void => {
+    return;
+  };
 
   const onFocusHandler = (): void => setError(null);
 
-  const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
-    const validationError = validateUsername(username);
-
-    if (validationError) {
-      event.preventDefault();
-      setError(validationError);
-    } else {
-      setError(null);
-      console.log('Form submitted successfully:', { username });
-    }
-  };
-
   return (
-    <Form
-      method="post"
-      onSubmit={onSubmitHandler}
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(email, password);
+      }}
       aria-labelledby="Username Entry Form"
-      className="grid justify-items-center gap-20 py-14 text-center rounded-b-3xl bg-startScreen-bg"
-    >
+      className="grid justify-items-center gap-20 py-14 text-center rounded-b-3xl bg-startScreen-bg">
       <h2 id="Username Entry Form" className="sr-only">
         Enter your username
       </h2>
       <div className="grid justify-items-center gap-2">
         <label
           className="mb-2 text-xl sm:text-2xl text-startScreen-text"
-          htmlFor="username"
-        >
+          htmlFor="username">
           What do your brain cells call you?
         </label>
         <Input
-          id="username"
-          value={username}
+          id="email"
+          value={email}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
           onFocus={onFocusHandler}
           error={error || null}
         />
-        {actionError?.statusText && (
+        <Input
+          id="password"
+          value={password}
+          onChange={onChangeHandlerPass}
+          onBlur={onBlurHandlerPass}
+          onFocus={onFocusHandler}
+          error={error || null}
+        />
+        {false && (
           <div
             className="mt-2 py-4 px-4 font-sans bg-gray text-accentRed"
             role="alert"
-            aria-live="assertive"
-          >
-            <p className="font-bold">{actionError.statusText}</p>
+            aria-live="assertive">
+            <p className="font-bold"></p>
             <p>If the problem persists, please contact the administrator.</p>
           </div>
         )}
       </div>
       <button
         type="submit"
-        className="px-20 py-4 text-2xl rounded-[4rem] text-startScreen-link-text bg-startScreen-link-bg"
-      >
+        className="px-20 py-4 text-2xl rounded-[4rem] text-startScreen-link-text bg-startScreen-link-bg">
         PLAY
       </button>
-    </Form>
+    </form>
   );
 };
 
-export default StartScreenForm;
+export default LoginForm;

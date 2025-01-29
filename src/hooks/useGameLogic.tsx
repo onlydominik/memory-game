@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { UseRefTimeout } from '../types';
+import { useEffect } from "react";
+import { UseRefTimeout } from "../types";
 import {
   GameSessionState,
   GameSessionDispatch,
-} from '../reducer/gameSessionReducer/gameSessionReducerTypes';
-import { GameDispatch } from '../reducer/gameReducer/gameReducerTypes';
-import { Challenge, GameContextStateValue } from '../types';
-import { doc, updateDoc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+} from "../reducer/gameSessionReducer/gameSessionReducerTypes";
+import { GameDispatch } from "../reducer/gameReducer/gameReducerTypes";
+import { Challenge, GameContextStateValue } from "../types";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
 interface UseGameLogicProps {
   gameSessionState: GameSessionState;
@@ -15,7 +15,7 @@ interface UseGameLogicProps {
   activeChallenge: Challenge | undefined;
   gameCoreDispatch: GameDispatch;
   gameCoreState: GameContextStateValue;
-  difficulty: Challenge['difficulty'];
+  difficulty: Challenge["difficulty"];
   timeout: UseRefTimeout;
 }
 
@@ -33,15 +33,15 @@ const useGameLogic = ({
       const [firstCard, secondCard] = gameSessionState.flippedCards;
       if (firstCard.id === secondCard.id) {
         gameSessionDispatch({
-          type: 'SET_MATCHED_CARD',
+          type: "SET_MATCHED_CARD",
           payload: firstCard.id,
         });
       } else {
         timeout.current = setTimeout(() => {
-          gameSessionDispatch({ type: 'RESET_FLIPPED_CARDS' });
+          gameSessionDispatch({ type: "RESET_FLIPPED_CARDS" });
         }, 1500);
       }
-      gameSessionDispatch({ type: 'SET_MOVE' });
+      gameSessionDispatch({ type: "SET_MOVE" });
     }
   }, [gameSessionState.flippedCards, gameSessionDispatch]);
 
@@ -50,7 +50,7 @@ const useGameLogic = ({
       activeChallenge &&
       gameSessionState.matchedCards.length === activeChallenge.uniqueCards / 2
     ) {
-      gameSessionDispatch({ type: 'SET_GAME_STATUS', payload: 'win' });
+      gameSessionDispatch({ type: "SET_GAME_STATUS", payload: "win" });
     }
   }, [gameSessionState.matchedCards, activeChallenge, gameSessionDispatch]);
 
@@ -62,7 +62,7 @@ const useGameLogic = ({
     ) {
       const calculateMedalScore = (
         time: number,
-        medalTtimeLimits: Challenge['medalTimeLimits']
+        medalTtimeLimits: Challenge["medalTimeLimits"]
       ) => {
         if (time <= medalTtimeLimits.gold) return 3;
         if (time <= medalTtimeLimits.silver) return 2;
@@ -82,13 +82,13 @@ const useGameLogic = ({
         medalScore,
       };
       gameCoreDispatch({
-        type: 'SET_HIGHSCORES',
+        type: "SET_HIGHSCORES",
         payload: newHighscore,
       });
 
       const addHighscoretoFirestore = async () => {
         try {
-          const difficultyRef = doc(db, 'highscores', difficulty);
+          const difficultyRef = doc(db, "highscores", difficulty);
           const fieldValue = `${difficulty}Scores`;
 
           const snapshot = await getDoc(difficultyRef);
@@ -110,7 +110,7 @@ const useGameLogic = ({
             [fieldValue]: updatedHighscores,
           });
         } catch (error) {
-          console.error('Error adding highscore:', error);
+          console.error("Error adding highscore:", error);
         }
       };
 

@@ -1,7 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import StartScreen, {
-  action as startScreenAction,
-} from './pages/StartScreen/StartScreen.tsx';
+import Login from './pages/auth/Login/Login.tsx';
 import RootLayout from './pages/RootLayout.tsx';
 import LevelPickerPanel from './pages/LevelPickerPanel/LevelPickerPanel.tsx';
 import { loader as PlayAreaLoader } from './pages/GamePanel/PlayArea/PlayArea.loader.tsx';
@@ -33,9 +31,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/start',
-    element: <StartScreen />,
-    action: startScreenAction,
+    path: '/login',
+    element: <Login />,
   },
 ]);
 

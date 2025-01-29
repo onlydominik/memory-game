@@ -42,8 +42,7 @@ const LevelPickerPanelCard = ({
           <span
             className={`ml-2 ${
               highscore.time ? timeColorClass : 'text-challenge-text'
-            }`}
-          >
+            }`}>
             {highscore.time ? `${highscore.time} s` : '---'}
           </span>
         </div>
@@ -51,8 +50,7 @@ const LevelPickerPanelCard = ({
       <Link
         to={`/level/${difficulty}`}
         aria-label={`Start challenge for ${difficulty} level`}
-        className={`block w-full py-2 text-center text-2xl text-challenge-bg/50 hover:text-white/90 ${difficultyClassBg}`}
-      >
+        className={`block w-full py-2 text-center text-2xl text-challenge-bg/50 hover:text-white/90 ${difficultyClassBg}`}>
         START
       </Link>
     </article>
