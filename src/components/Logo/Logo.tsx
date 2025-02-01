@@ -13,7 +13,7 @@ export const Logo = memo(
         MIND MELD
       </Link>
     ) : (
-      <p className="text-center text-5xl sm:text-6xl textLogoColor">
+      <p className="text-center text-5xl sm:text-6xl textLogoColor cursor-default">
         MIND MELD
       </p>
     );

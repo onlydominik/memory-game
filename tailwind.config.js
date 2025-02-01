@@ -78,6 +78,7 @@ export default {
       },
       backgroundImage: {
         gradientBody: 'linear-gradient(#0F2027, #1F3D4A, #0F2027)',
+        loginLine: '',
       },
       boxShadow: {
         smoothShadow:

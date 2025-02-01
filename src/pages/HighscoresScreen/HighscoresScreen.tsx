@@ -46,8 +46,11 @@ const HighscoresScreen = () => {
                       className="p-4 rounded bg-white shadow-smoothShadow hover:outline-dotted hover:outline-[0.3rem] hover:outline-logoTheme cursor-default"
                     >
                       <div className="flex flex-col sm:flex-row gap-4">
-                        <div className="flex items-center gap-8 mx-auto sm:ml-0 sm:mr-auto ">
-                          <span className="text-xl">{score.username}</span>
+                        <div className="w-full flex items-center justify-end gap-6 sm:ml-0">
+                          <span className="text-xl mr-auto">
+                            {score.username}
+                          </span>
+
                           <span
                             className={`text-2xl ${
                               medalScoreTimeColors[score.medalScore]
@@ -56,10 +59,11 @@ const HighscoresScreen = () => {
                             {formatTime(score.time)}
                           </span>
                           <span className="flex">
-                            <MedalIcons medalScore={score.medalScore} />
+                            <MedalIcons
+                              medalScore={score.medalScore}
+                              className="mx-0"
+                            />
                           </span>
-                        </div>
-                        <div className="flex items-center justify-center gap-4">
                           <span>Moves: {score.moves}</span>
                           <span>Missed: {score.missed}</span>
                         </div>

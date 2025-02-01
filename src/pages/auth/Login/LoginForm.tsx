@@ -1,82 +1,101 @@
-import { useState } from 'react';
-import { Input } from './StartScreenInput';
+import { FormEvent, useEffect, useState } from 'react';
+import { Input } from '../../../components/Input';
+import OrSeparator from '../../../components/OrSeparator';
+import ContinueWithGoogle from '../../../components/ContinueWithGoogle/ContinueWithGoogle';
+import { isEmailVaild } from '../../../firebase/auth';
+import { LoginFormProps } from './TypesLogin';
 
-interface LoginFormProps {
-  onSubmit: (email: string, password: string) => void;
-}
-
-const LoginForm = ({ onSubmit }: LoginFormProps) => {
+const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passError, setPassError] = useState<string | null>(null);
 
-  const validateUsername = (value: string): string | null => {
-    if (value.length < 3 || value.length > 18) {
-      return 'Username must be between 3 and 18 characters long';
-    } else if (value.includes(' ')) {
-      return 'Username must not contain spaces';
+  useEffect(() => {
+    if (authError && authError.code === 'auth/invalid-credential')
+      setEmailError('Invalid email or password. Please try again.');
+  }),
+    [authError];
+
+  const isPassValid = () => {
+    if (password === '') {
+      setPassError('You must enter a password');
+      return false;
     }
-    return null;
+    return true;
   };
 
-  const onChangeHandler = (value: string): void => setEmail(value);
-  const onChangeHandlerPass = (value: string): void => setPassword(value);
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const onBlurHandler = (): void => setError(validateUsername(email));
-  const onBlurHandlerPass = (): void => {
-    return;
+    setEmailError(null);
+    setPassError(null);
+
+    if (!isEmailVaild(email, setEmailError) || !isPassValid()) {
+      return;
+    }
+
+    onSubmit(email, password);
   };
 
-  const onFocusHandler = (): void => setError(null);
-
+  const onBlurHandlerEmail = () => {
+    if (email) isEmailVaild(email, setEmailError);
+  };
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit(email, password);
+        onSubmitHandler(e);
       }}
-      aria-labelledby="Username Entry Form"
-      className="grid justify-items-center gap-20 py-14 text-center rounded-b-3xl bg-startScreen-bg">
-      <h2 id="Username Entry Form" className="sr-only">
-        Enter your username
-      </h2>
-      <div className="grid justify-items-center gap-2">
-        <label
-          className="mb-2 text-xl sm:text-2xl text-startScreen-text"
-          htmlFor="username">
-          What do your brain cells call you?
-        </label>
-        <Input
-          id="email"
-          value={email}
-          onChange={onChangeHandler}
-          onBlur={onBlurHandler}
-          onFocus={onFocusHandler}
-          error={error || null}
-        />
-        <Input
-          id="password"
-          value={password}
-          onChange={onChangeHandlerPass}
-          onBlur={onBlurHandlerPass}
-          onFocus={onFocusHandler}
-          error={error || null}
-        />
-        {false && (
-          <div
-            className="mt-2 py-4 px-4 font-sans bg-gray text-accentRed"
-            role="alert"
-            aria-live="assertive">
-            <p className="font-bold"></p>
-            <p>If the problem persists, please contact the administrator.</p>
-          </div>
-        )}
-      </div>
+      aria-labelledby="Login form"
+      className="grid gap-1 text-sm font-mono"
+    >
+      <label htmlFor="email" className="block mb-1 text-white">
+        Email
+      </label>
+      <Input
+        id="email"
+        value={email}
+        type="email"
+        onChange={setEmail}
+        onBlur={onBlurHandlerEmail}
+        onFocus={() => {
+          setEmailError(null);
+        }}
+        error={emailError}
+        required
+      />
+      <label htmlFor="password" className="block mb-1 text-white">
+        Password
+      </label>
+      <Input
+        id="password"
+        type="password"
+        value={password}
+        onChange={setPassword}
+        onFocus={() => {
+          setPassError(null);
+        }}
+        error={passError}
+      />
       <button
-        type="submit"
-        className="px-20 py-4 text-2xl rounded-[4rem] text-startScreen-link-text bg-startScreen-link-bg">
-        PLAY
+        className={`min-h-14 mt-4 w-full font-sans font-bold hover:opacity-90 transition-opacity bg-white rounded-md ${
+          isSigningIn && 'cursor-wait'
+        }`}
+      >
+        Log in
       </button>
+      <OrSeparator />
+      <ContinueWithGoogle />
+      {false && (
+        <div
+          className="mt-2 py-4 px-4 font-sans bg-gray text-accentRed"
+          role="alert"
+          aria-live="assertive"
+        >
+          <p className="font-bold"></p>
+          <p>If the problem persists, please contact the administrator.</p>
+        </div>
+      )}
     </form>
   );
 };

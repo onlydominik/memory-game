@@ -1,4 +1,4 @@
-import GameOptionPanel from '../../components/GameStatPanel/GameStatPanel';
+import GameStatPanel from '../../components/GameStatPanel/GameStatPanel';
 import PlayArea from './PlayArea/PlayArea';
 import {
   gameSessionReducer,
@@ -15,7 +15,7 @@ const GamePanel = () => {
   const { moves, missed, gameStatus } = gameSessionState;
   return (
     <div className="flex flex-col-reverse gap-8 items-center justify-center mx-3">
-      <GameOptionPanel
+      <GameStatPanel
         gameStatus={gameStatus}
         moves={moves}
         missed={missed}
@@ -28,5 +28,7 @@ const GamePanel = () => {
     </div>
   );
 };
+
+GamePanel.displayName = 'GamePanel';
 
 export default GamePanel;

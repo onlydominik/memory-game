@@ -3,6 +3,7 @@ import { GameSessionDispatch } from '../../reducer/gameSessionReducer/gameSessio
 import { GameSessionState } from '../../reducer/gameSessionReducer/gameSessionReducerTypes';
 import { formatTime } from '../../pages/GamePanel/GameLogicUtils';
 import { useGame } from '../../context/GameContext';
+import { useAuth } from '../../hooks/useAuth';
 const GameStatPanel = memo(
   ({
     gameStatus,
@@ -15,8 +16,7 @@ const GameStatPanel = memo(
     const [timer, setTimer] = useState(0);
     const interval = useRef<NodeJS.Timeout | null>(null);
     const { state: gameCoreState } = useGame();
-    console.log(gameStatus);
-
+    const { isLoading } = useAuth();
     useEffect(() => {
       if (gameStatus === 'inProgress')
         interval.current = setInterval(() => {
@@ -44,11 +44,11 @@ const GameStatPanel = memo(
 
     const singleStatAreaClassname = 'grid justify-items-center';
     if (gameStatus === 'win') return null;
-    if (gameCoreState.isLoading) return null;
+    if (gameCoreState.isLoading || isLoading) return null;
     return (
-      <aside className="xl:absolute xl:left-[-7rem] grid gap-3 justify-center w-full xs:max-w-[30rem] xl:w-max px-4 py-4 bg-white rounded-xl shadow-smoothShadow">
+      <aside className="xl:absolute xl:left-[-7rem] grid gap-3 justify-center w-full xs:max-w-[30rem] xl:w-max px-4 py-4 bg-white/10 border-white border-[0.08rem] rounded-xl shadow-smoothShadow">
         <div
-          className={`text-center content-center xl:py-14 h-[3rem] xl:h-[10rem] text-gameStatPanel-textPrimary ${
+          className={`text-center content-center xl:py-14 h-[3rem] xl:h-[10rem] text-white ${
             gameStatus === 'pending' ? 'text-2xl' : 'text-5xl'
           }`}
         >

@@ -63,7 +63,7 @@ const gameReducer = (
               }
               return a.time - b.time;
             })
-            .slice(0, 4),
+            .slice(0, 10),
         },
       };
 

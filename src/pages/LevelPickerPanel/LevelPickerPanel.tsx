@@ -9,7 +9,6 @@ import { useAuth } from '../../hooks/useAuth.tsx';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebase.ts';
-import { doSignOut } from '../../firebase/auth.ts';
 
 const LevelPickerPanel = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,10 +39,6 @@ const LevelPickerPanel = () => {
     return () => unsubscribe();
   }, [navigate]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (!currentUser) {
     return null;
   }
@@ -51,7 +46,7 @@ const LevelPickerPanel = () => {
   return (
     <>
       <div className="grid md:grid-cols-3 gap-8 mx-auto max-w-[90%] mb-8">
-        {challenges.length === 0 ? (
+        {challenges.length === 0 || isLoading ? (
           <>
             <LevelPickerPanelLoadingCard />
             <LevelPickerPanelLoadingCard />
@@ -69,9 +64,7 @@ const LevelPickerPanel = () => {
           })
         )}
       </div>
-      <h1>
-        Logout <button onClick={doSignOut}>sign out</button>
-      </h1>
+
       <Footer />
     </>
   );

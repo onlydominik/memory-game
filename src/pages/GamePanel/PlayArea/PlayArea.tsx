@@ -1,10 +1,9 @@
 import { useLoaderData, useParams } from 'react-router-dom';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState, useEffect } from 'react';
 import { useGame } from '../../../context/GameContext';
 import { Challenge, Images, TimeoutId, UseRefTimeout } from '../../../types';
 import PlayAreaCard from './PlayAreaCard';
 import styles from './PlayArea.module.css';
-import stylesLoader from './PlayAreaLoader.module.css';
 import { random, shuffleArray, generateIdForImages } from '../GameLogicUtils';
 import GameWinModal from '../../../components/GameWinModal/GameWinModal';
 import { useGameLogic } from '../../../hooks/useGameLogic';
@@ -12,6 +11,8 @@ import {
   GameSessionState,
   GameSessionDispatch,
 } from '../../../reducer/gameSessionReducer/gameSessionReducerTypes';
+import questionMark from '../../../../public/icons/question-mark.png';
+import Loader from '../../../components/Loader/Loader';
 
 const PlayArea = ({
   gameSessionState,
@@ -24,6 +25,7 @@ const PlayArea = ({
   const images: Images = useLoaderData();
   const { state: gameCoreState, dispatch: gameCoreDispatch } = useGame();
   const timeout: UseRefTimeout = useRef<TimeoutId>();
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   const challenges = gameCoreState.challenges ?? [];
   const activeChallenge = challenges.find(
@@ -73,8 +75,36 @@ const PlayArea = ({
         return '';
     }
   }, [activeChallenge]);
-  if (gameCoreState.isLoading)
-    return <div className={`${stylesLoader.loader} mt-20`}></div>;
+
+  useEffect(() => {
+    if (!cards.length) return;
+
+    const imagePromises = cards.map((image) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = image.path;
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+    });
+
+    // Also preload question mark image
+    const questionMarkPromise = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = questionMark;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+
+    Promise.all([...imagePromises, questionMarkPromise])
+      .then(() => setImagesLoaded(true))
+      .catch(console.error);
+  }, [cards]);
+
+  if (!imagesLoaded || gameCoreState.isLoading) {
+    return <Loader size="lg" color="light" className="mt-20" />;
+  }
+
   return (
     <main className={`${styles.playAreaMain} ${levelClass}`}>
       {gameSessionState.gameStatus === 'win' ? (

@@ -3,6 +3,7 @@ import { auth } from '../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import Loader from '../components/Loader/Loader';
 
 export type AuthContextType = {
   currentUser: any;
@@ -19,21 +20,7 @@ export const AuthContext = createContext<AuthContextType>({
 type AuthProviderProps = {
   children: ReactNode;
 };
-export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const { currentUser, isLoading } = useAuth();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLoading && !currentUser) {
-      navigate('/login');
-    }
-  }, [currentUser, isLoading, navigate]);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (!currentUser) return null;
-
-  return <>{children}</>;
-};
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -63,4 +50,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  const { currentUser, isLoading } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoading && !currentUser) {
+      navigate('/login');
+    }
+  }, [currentUser, isLoading, navigate]);
+
+  if (isLoading)
+    return <Loader size="lg" color="light" className="mx-auto mt-20" />;
+  if (!currentUser) return null;
+
+  return <>{children}</>;
 };

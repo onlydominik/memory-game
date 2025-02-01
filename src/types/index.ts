@@ -1,4 +1,6 @@
-export interface InputProps {
+import { InputHTMLAttributes } from 'react';
+
+interface BaseInputProps {
   value: string;
   id: string;
   onChange: (value: string) => void;
@@ -6,6 +8,10 @@ export interface InputProps {
   onFocus?: () => void;
   error?: string | null;
 }
+
+// Combine base props with HTML input attributes, excluding ones we defined
+export type InputProps = BaseInputProps &
+  Omit<InputHTMLAttributes<HTMLInputElement>, keyof BaseInputProps>;
 
 export interface Challenge {
   id: string;
@@ -30,6 +36,7 @@ export type Images = Image[];
 export type Highscore = {
   id: number;
   username: string;
+  email: string;
   difficulty: 'easy' | 'medium' | 'hard';
   time: number;
   moves: number;

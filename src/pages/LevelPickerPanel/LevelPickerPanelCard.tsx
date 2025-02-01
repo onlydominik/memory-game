@@ -5,6 +5,7 @@ import {
   difficultyClassMap,
   medalScoreTimeColors,
 } from '../../utils/gameStyleUtils';
+import { useAuth } from '../../hooks/useAuth';
 const LevelPickerPanelCard = ({
   challenge,
   highscores,
@@ -13,12 +14,15 @@ const LevelPickerPanelCard = ({
   highscores: HighscoresByChallenge;
 }) => {
   const { difficulty, uniqueCards } = challenge;
+  const { currentUser } = useAuth();
   const records = highscores[difficulty] || [];
-  const highscore = records[0] || {
+  const currentUserHighscoreIndex = records.findIndex((el) => {
+    return el.username === currentUser.displayName;
+  });
+  const highscore = records[currentUserHighscoreIndex] || {
     time: 0,
     medalScore: 0,
   };
-
   const difficultyClassText = difficultyClassMap[difficulty].text || '';
 
   const difficultyClassBg = difficultyClassMap[difficulty].bg || '';
@@ -42,7 +46,8 @@ const LevelPickerPanelCard = ({
           <span
             className={`ml-2 ${
               highscore.time ? timeColorClass : 'text-challenge-text'
-            }`}>
+            }`}
+          >
             {highscore.time ? `${highscore.time} s` : '---'}
           </span>
         </div>
@@ -50,7 +55,8 @@ const LevelPickerPanelCard = ({
       <Link
         to={`/level/${difficulty}`}
         aria-label={`Start challenge for ${difficulty} level`}
-        className={`block w-full py-2 text-center text-2xl text-challenge-bg/50 hover:text-white/90 ${difficultyClassBg}`}>
+        className={`block w-full py-2 text-center text-2xl text-challenge-bg/50 hover:text-white/90 ${difficultyClassBg}`}
+      >
         START
       </Link>
     </article>

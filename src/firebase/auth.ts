@@ -1,10 +1,11 @@
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  signInAnonymously,
   signInWithEmailAndPassword,
   signInWithPopup,
-} from "firebase/auth";
-import { auth } from "./firebase";
+} from 'firebase/auth';
+import { auth } from './firebase';
 
 export const doCreateUserWithEmailAndPassword = async (
   email: any,
@@ -26,6 +27,21 @@ export const doSignInWithGoogle = async () => {
   return result;
 };
 
+export const doSignInAnonymously = async () => {
+  const result = await signInAnonymously(auth);
+  return result;
+};
+
 export const doSignOut = () => {
   return auth.signOut();
+};
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export const isEmailVaild = (email: string, setErrorFunc: any) => {
+  if (!emailRegex.test(email)) {
+    setErrorFunc('Invalid email address');
+    return false;
+  }
+  return true;
 };

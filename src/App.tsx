@@ -7,6 +7,8 @@ import { loader as HighscoresScreenLoader } from './pages/HighscoresScreen/Highs
 import GamePanel from './pages/GamePanel/GamePanel.tsx';
 import HighscoresScreen from './pages/HighscoresScreen/HighscoresScreen.tsx';
 import Fallback from './components/Fallback.tsx';
+import Register from './pages/auth/Register/Register.tsx';
+import { AuthProvider } from './context/AuthContext.tsx';
 
 const router = createBrowserRouter([
   {
@@ -31,8 +33,20 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/login',
-    element: <Login />,
+    path: 'login',
+    element: (
+      <AuthProvider>
+        <Login />
+      </AuthProvider>
+    ),
+  },
+  {
+    path: 'signup',
+    element: (
+      <AuthProvider>
+        <Register />
+      </AuthProvider>
+    ),
   },
 ]);
 
