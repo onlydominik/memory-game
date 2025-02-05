@@ -2,13 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import RegisterForm from './RegisterForm.tsx';
 import { Logo } from '../../../components/Logo/Logo.tsx';
 
-import { doCreateUserWithEmailAndPassword } from '../../../firebase/auth.ts';
 import { useAuth } from '../../../hooks/useAuth.tsx';
 import { useState, useEffect } from 'react';
-import { updateProfile } from 'firebase/auth';
+import Loader from '../../../components/Loader/Loader.tsx';
 
 const Register = () => {
-  const { userLoggedIn } = useAuth();
+  const { userLoggedIn, isLoading } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [authError, setAuthError] = useState<any>(null);
   const navigate = useNavigate();
@@ -18,33 +17,41 @@ const Register = () => {
     username: string,
     password: string
   ) => {
-    if (!isSigningIn) {
-      try {
-        setIsSigningIn(true);
-        const userCredential = await doCreateUserWithEmailAndPassword(
-          email,
-          password
-        );
-        const user = userCredential.user;
-        await updateProfile(user, {
-          displayName: username,
-        });
-        navigate('/login');
-      } catch (error) {
-        setAuthError(error);
-        console.error('Register failed:', error);
-      } finally {
-        setIsSigningIn(false);
-      }
+    if (isSigningIn) return;
+
+    try {
+      setIsSigningIn(true);
+      const { doCreateUserWithEmailAndPassword } = await import(
+        '../../../firebase/auth'
+      );
+      const { updateProfile } = await import('firebase/auth');
+
+      const userCredential = await doCreateUserWithEmailAndPassword(
+        email,
+        password
+      );
+
+      const user = userCredential.user;
+      await updateProfile(user, {
+        displayName: username,
+      });
+
+      navigate('/login');
+    } catch (error) {
+      setAuthError(error);
+      console.error('Register failed:', error);
+    } finally {
+      setIsSigningIn(false);
     }
   };
 
   useEffect(() => {
-    if (userLoggedIn) {
+    if (!isLoading && userLoggedIn) {
       navigate('/');
     }
-  }, [userLoggedIn, navigate]);
+  }, [userLoggedIn, isLoading, navigate]);
 
+  if (isLoading) return <Loader size="lg" color="light" />;
   return (
     <main className="grid gap-8 md:gap-8 mx-4 pt-8 md:pt-4 max-w-[25rem] sm:mx-auto">
       <Logo isLink={false} />

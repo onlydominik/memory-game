@@ -6,6 +6,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { auth } from './firebase';
+import { ANONYMOUS_HIGHSCORES_KEY } from '../services/localStorage/anonymousHighscores';
 
 export const doCreateUserWithEmailAndPassword = async (
   email: any,
@@ -29,6 +30,12 @@ export const doSignInWithGoogle = async () => {
 
 export const doSignInAnonymously = async () => {
   const result = await signInAnonymously(auth);
+  if (!localStorage.getItem(ANONYMOUS_HIGHSCORES_KEY)) {
+    localStorage.setItem(
+      ANONYMOUS_HIGHSCORES_KEY,
+      JSON.stringify({ easy: [], medium: [], hard: [] })
+    );
+  }
   return result;
 };
 

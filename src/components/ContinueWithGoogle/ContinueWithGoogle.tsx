@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { doSignInWithGoogle } from '../../firebase/auth';
 import './ContinueWithGoogleStyles.css';
 const ContinueWithGoogle = () => {
   const navigate = useNavigate();
-  const onClickHandler = () => {
-    doSignInWithGoogle();
+  const onClickHandler = async () => {
+    const { doSignInWithGoogle } = await import('../../firebase/auth');
+    await doSignInWithGoogle();
     navigate('/');
   };
   return (

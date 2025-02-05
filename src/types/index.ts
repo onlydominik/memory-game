@@ -51,6 +51,7 @@ export type HighscoresByChallenge = {
 
 export interface CurrentUser {
   username: string;
+  isAnonymous: boolean;
 }
 
 export interface GameContextStateValue {
@@ -70,3 +71,19 @@ export type FetchResult<T> = {
 //GAME PANEL TYPES
 export type TimeoutId = ReturnType<typeof setTimeout>;
 export type UseRefTimeout = React.MutableRefObject<TimeoutId | undefined>;
+
+export interface AnonymousHighscore {
+  username: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  time: number;
+  moves: number;
+  missed: number;
+  medalScore: number;
+  date: number;
+}
+
+export interface HighscoresByChallengeAnonymous {
+  easy: AnonymousHighscore[];
+  medium: AnonymousHighscore[];
+  hard: AnonymousHighscore[];
+}

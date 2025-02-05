@@ -45,7 +45,7 @@ const LevelPickerPanel = () => {
 
   return (
     <>
-      <div className="grid md:grid-cols-3 gap-8 mx-auto max-w-[90%] mb-8">
+      <div className="grid md:grid-cols-3 gap-8 mx-auto max-w-[90%] mb-14 md:mb-24">
         {challenges.length === 0 || isLoading ? (
           <>
             <LevelPickerPanelLoadingCard />

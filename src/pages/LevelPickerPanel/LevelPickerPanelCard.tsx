@@ -15,9 +15,21 @@ const LevelPickerPanelCard = ({
 }) => {
   const { difficulty, uniqueCards } = challenge;
   const { currentUser } = useAuth();
-  const records = highscores[difficulty] || [];
-  const currentUserHighscoreIndex = records.findIndex((el) => {
-    return el.username === currentUser.displayName;
+  const getAnonymousHighscores = (difficulty: string) => {
+    const stored = localStorage.getItem('anonymousHighscores');
+    if (!stored) return [];
+    const scores = JSON.parse(stored);
+    return scores[difficulty] || [];
+  };
+
+  const records = currentUser?.isAnonymous
+    ? getAnonymousHighscores(difficulty)
+    : highscores[difficulty] || [];
+
+  const currentUserHighscoreIndex = records.findIndex((el: any) => {
+    return currentUser?.isAnonymous
+      ? el.username === 'Guest'
+      : el.username === currentUser?.displayName;
   });
   const highscore = records[currentUserHighscoreIndex] || {
     time: 0,
@@ -38,7 +50,7 @@ const LevelPickerPanelCard = ({
           </span>
           CARDS
         </div>
-        <div className="flex gap-2 w-10 sm:w-64 md:w-10 justify-self-center justify-center">
+        <div className="flex w-fit gap-2 justify-self-center">
           <MedalIcons medalScore={highscore.medalScore} />
         </div>
         <div className="text-lg">

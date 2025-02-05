@@ -2,10 +2,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm.tsx';
 import { Logo } from '../../../components/Logo/Logo.tsx';
 
-import {
-  doSignInAnonymously,
-  doSignInWithEmailAndPassword,
-} from '../../../firebase/auth.ts';
 import { useAuth } from '../../../hooks/useAuth.tsx';
 import { useState, useEffect } from 'react';
 
@@ -16,19 +12,37 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (email: string, password: string) => {
-    if (!isSigningIn) {
-      try {
-        setIsSigningIn(true);
-        await doSignInWithEmailAndPassword(email, password);
-        navigate('/');
-      } catch (error) {
-        setAuthError(error);
-        console.error('Sign in failed:', error);
-      } finally {
-        setIsSigningIn(false);
-      }
+    if (isSigningIn) return;
+
+    try {
+      setIsSigningIn(true);
+      const { doSignInWithEmailAndPassword } = await import(
+        '../../../firebase/auth'
+      );
+      await doSignInWithEmailAndPassword(email, password);
+      navigate('/');
+    } catch (error) {
+      setAuthError(error);
+      console.error('Sign in failed:', error);
+    } finally {
+      setIsSigningIn(false);
     }
   };
+
+  const handleOnClickDoSignInAnonymously = async () => {
+    try {
+      setIsSigningIn(true);
+      const { doSignInAnonymously } = await import('../../../firebase/auth.ts');
+      await doSignInAnonymously();
+      navigate('/');
+    } catch (error) {
+      setAuthError(error);
+      console.error('Sign in failed:', error);
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
+  console.log(userLoggedIn);
 
   useEffect(() => {
     if (userLoggedIn) {
@@ -45,10 +59,12 @@ const Login = () => {
         isSigningIn={isSigningIn}
       />
 
-      <p className="grid gap-4 font-sans text-center text-white/70 text-sm">
+      <p className="grid gap-4 justify-items-center font-sans text-center text-white/70 text-sm">
         <button
-          onClick={doSignInAnonymously}
-          className="text-xs hover:underline"
+          onClick={handleOnClickDoSignInAnonymously}
+          className={`text-xs hover:underline text-center w-fit ${
+            isSigningIn && 'cursor-wait'
+          }`}
         >
           Try as a Guest
         </button>

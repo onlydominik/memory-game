@@ -8,7 +8,7 @@ const MedalIcons = ({
   medalScore: number;
   className?: string;
 }) => {
-  const medalClassname = `w-10 sm:w-12 md:w-10 ${className}`;
+  const medalClassname = `w-10 sm:w-12 md:w-10`;
   const medalIcons = [1, 2, 3].map((score) => {
     return (
       <img
@@ -22,7 +22,7 @@ const MedalIcons = ({
     );
   });
 
-  return <>{medalIcons}</>;
+  return <div className={`flex ${className}`}>{medalIcons}</div>;
 };
 
 export default MedalIcons;

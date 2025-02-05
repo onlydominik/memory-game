@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
 import { auth } from '../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Loader from '../components/Loader/Loader';
 
@@ -14,7 +14,7 @@ export type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   currentUser: null,
   userLoggedIn: false,
-  isLoading: false,
+  isLoading: true,
 });
 
 type AuthProviderProps = {
@@ -27,21 +27,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, initializeUser);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setUserLoggedIn(!!user);
+      setLoading(false);
+    });
 
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
-
-  const initializeUser = async (user: any) => {
-    if (user) {
-      setCurrentUser({ ...user });
-      setUserLoggedIn(true);
-    } else {
-      setCurrentUser(null);
-      setUserLoggedIn(false);
-    }
-    setLoading(false);
-  };
 
   const value = {
     currentUser,
@@ -66,4 +59,22 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   if (!currentUser) return null;
 
   return <>{children}</>;
+};
+
+export const RedirectIfLoggedIn = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const { userLoggedIn, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center">
+        <Loader size="lg" color="light" className="mx-auto" />
+      </div>
+    );
+  }
+
+  return userLoggedIn ? <Navigate to="/" replace /> : <>{children}</>;
 };

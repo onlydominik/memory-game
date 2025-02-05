@@ -8,6 +8,7 @@ import { GameDispatch } from '../reducer/gameReducer/gameReducerTypes';
 import { Challenge, GameContextStateValue } from '../types';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
+import { saveAnonymousHighscore } from '../services/localStorage/anonymousHighscores';
 interface UseGameLogicProps {
   gameSessionState: GameSessionState;
   gameSessionDispatch: GameSessionDispatch;
@@ -80,6 +81,20 @@ const useGameLogic = ({
         missed: gameSessionState.missed,
         medalScore,
       };
+
+      if (gameCoreState.currentUser.isAnonymous) {
+        saveAnonymousHighscore({
+          username: 'Guest',
+          difficulty,
+          time: gameSessionState.time,
+          moves: gameSessionState.moves,
+          missed: gameSessionState.missed,
+          medalScore: medalScore,
+          date: Date.now(),
+        });
+        return;
+      }
+
       gameCoreDispatch({
         type: 'SET_HIGHSCORES',
         payload: newHighscore,

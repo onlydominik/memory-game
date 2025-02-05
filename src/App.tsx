@@ -1,14 +1,22 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Login from './pages/auth/Login/Login.tsx';
-import RootLayout from './pages/RootLayout.tsx';
-import LevelPickerPanel from './pages/LevelPickerPanel/LevelPickerPanel.tsx';
-import { loader as PlayAreaLoader } from './pages/GamePanel/PlayArea/PlayArea.loader.tsx';
-import { loader as HighscoresScreenLoader } from './pages/HighscoresScreen/HighscoresScreen.loader.tsx';
-import GamePanel from './pages/GamePanel/GamePanel.tsx';
-import HighscoresScreen from './pages/HighscoresScreen/HighscoresScreen.tsx';
-import Fallback from './components/Fallback.tsx';
-import Register from './pages/auth/Register/Register.tsx';
-import { AuthProvider } from './context/AuthContext.tsx';
+import { lazy, Suspense } from 'react';
+import RootLayout from './layouts/RootLayout';
+import Fallback from './components/Fallback';
+import Loader from './components/Loader/Loader';
+
+const Login = lazy(() => import('./pages/auth/Login/Login'));
+const Register = lazy(() => import('./pages/auth/Register/Register'));
+const LevelPickerPanel = lazy(
+  () => import('./pages/LevelPickerPanel/LevelPickerPanel')
+);
+const GamePanel = lazy(() => import('./pages/GamePanel/GamePanel'));
+const HighscoresScreen = lazy(
+  () => import('./pages/HighscoresScreen/HighscoresScreen')
+);
+
+import { loader as PlayAreaLoader } from './pages/GamePanel/PlayArea/PlayArea.loader';
+import { loader as HighscoresScreenLoader } from './pages/HighscoresScreen/HighscoresScreen.loader';
+import { AuthProvider, RedirectIfLoggedIn } from './context/AuthContext';
 
 const router = createBrowserRouter([
   {
@@ -35,23 +43,33 @@ const router = createBrowserRouter([
   {
     path: 'login',
     element: (
-      <AuthProvider>
+      <RedirectIfLoggedIn>
         <Login />
-      </AuthProvider>
+      </RedirectIfLoggedIn>
     ),
   },
   {
     path: 'signup',
     element: (
-      <AuthProvider>
+      <RedirectIfLoggedIn>
         <Register />
-      </AuthProvider>
+      </RedirectIfLoggedIn>
     ),
   },
 ]);
 
-function App() {
-  return <RouterProvider router={router} />;
+export default function App() {
+  return (
+    <AuthProvider>
+      <Suspense
+        fallback={
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <Loader size="lg" color="light" />
+          </div>
+        }
+      >
+        <RouterProvider router={router} />
+      </Suspense>
+    </AuthProvider>
+  );
 }
-
-export default App;

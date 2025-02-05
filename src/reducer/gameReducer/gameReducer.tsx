@@ -4,6 +4,7 @@ import { GameAction, actionTypes } from './gameReducerTypes';
 const initialState: GameContextStateValue = {
   currentUser: {
     username: '',
+    isAnonymous: false,
   },
   highscores: {
     easy: [],

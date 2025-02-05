@@ -18,7 +18,10 @@ const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const challengesCollection = collection(db, 'challenges');
   const highscoresCollection = collection(db, 'highscores');
   const { currentUser } = useAuth();
-  const currentUserUsername = { username: currentUser.displayName };
+  const currentUserData = {
+    username: currentUser.displayName,
+    isAnonymous: currentUser.isAnonymous,
+  };
 
   useEffect(() => {
     const fetchFireStoreData = async () => {
@@ -48,7 +51,7 @@ const GameProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch({
           type: 'SET_ALL_DATA',
           payload: {
-            currentUser: currentUserUsername || 'Anonim',
+            currentUser: currentUserData,
             highscores: highscores,
             challenges: challenges,
             isLoading: false,

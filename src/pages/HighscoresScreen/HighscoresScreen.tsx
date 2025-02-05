@@ -16,7 +16,7 @@ const HighscoresScreen = () => {
           const difficultyKey = difficulty as keyof typeof difficultyClassMap;
           const difficultyClassBg = difficultyClassMap[difficultyKey]?.bg || '';
           return (
-            <div key={difficulty} className="mb-8">
+            <div key={difficulty} className="mb-8 mx-2">
               <div
                 className={`w-48 py-3 mb-2 text-center rounded-se-[4rem] ${difficultyClassBg}`}
               >
@@ -45,12 +45,9 @@ const HighscoresScreen = () => {
                       key={index}
                       className="p-4 rounded bg-white shadow-smoothShadow hover:outline-dotted hover:outline-[0.3rem] hover:outline-logoTheme cursor-default"
                     >
-                      <div className="flex flex-col sm:flex-row gap-4">
-                        <div className="w-full flex items-center justify-end gap-6 sm:ml-0">
-                          <span className="text-xl mr-auto">
-                            {score.username}
-                          </span>
-
+                      <div className="grid sm:flex items-center gap-4 w-full">
+                        <div className="flex items-center justify-between gap-8 w-full text-xl">
+                          <p>{score.username}</p>
                           <span
                             className={`text-2xl ${
                               medalScoreTimeColors[score.medalScore]
@@ -58,12 +55,13 @@ const HighscoresScreen = () => {
                           >
                             {formatTime(score.time)}
                           </span>
-                          <span className="flex">
-                            <MedalIcons
-                              medalScore={score.medalScore}
-                              className="mx-0"
-                            />
-                          </span>
+                        </div>
+
+                        <MedalIcons
+                          medalScore={score.medalScore}
+                          className="justify-self-center sm:ml-auto min-w-max"
+                        />
+                        <div className="flex gap-8 justify-self-center text-nowrap">
                           <span>Moves: {score.moves}</span>
                           <span>Missed: {score.missed}</span>
                         </div>

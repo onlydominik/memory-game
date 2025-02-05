@@ -88,7 +88,6 @@ const PlayArea = ({
       });
     });
 
-    // Also preload question mark image
     const questionMarkPromise = new Promise((resolve, reject) => {
       const img = new Image();
       img.src = questionMark;
@@ -101,7 +100,7 @@ const PlayArea = ({
       .catch(console.error);
   }, [cards]);
 
-  if (!imagesLoaded || gameCoreState.isLoading) {
+  if (gameCoreState.isLoading || !imagesLoaded) {
     return <Loader size="lg" color="light" className="mt-20" />;
   }
 

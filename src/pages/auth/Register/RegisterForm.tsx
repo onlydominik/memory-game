@@ -1,9 +1,8 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Input } from '../../../components/Input';
 import OrSeparator from '../../../components/OrSeparator';
-import ContinueWithGoogle from '../../../components/ContinueWithGoogle/ContinueWithGoogle';
 import { RegisterFormProps } from './TypesRegister';
-import { isEmailVaild } from '../../../firebase/auth';
+import ContinueWithGoogle from '../../../components/ContinueWithGoogle/ContinueWithGoogle';
 
 const RegisterForm = ({ onSubmit, authError }: RegisterFormProps) => {
   const [email, setEmail] = useState('');
@@ -12,6 +11,11 @@ const RegisterForm = ({ onSubmit, authError }: RegisterFormProps) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
+
+  const validateEmail = async (email: string) => {
+    const { isEmailVaild } = await import('../../../firebase/auth');
+    return isEmailVaild(email, setEmailError);
+  };
 
   useEffect(() => {
     if (authError && authError.code === 'auth/invalid-email')
@@ -56,7 +60,7 @@ const RegisterForm = ({ onSubmit, authError }: RegisterFormProps) => {
   };
 
   const onBlurHandlerEmail = (): void => {
-    if (email) isEmailVaild(email, setEmailError);
+    if (email) validateEmail(email);
   };
 
   return (

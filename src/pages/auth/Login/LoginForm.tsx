@@ -2,7 +2,6 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Input } from '../../../components/Input';
 import OrSeparator from '../../../components/OrSeparator';
 import ContinueWithGoogle from '../../../components/ContinueWithGoogle/ContinueWithGoogle';
-import { isEmailVaild } from '../../../firebase/auth';
 import { LoginFormProps } from './TypesLogin';
 
 const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
@@ -25,13 +24,19 @@ const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
     return true;
   };
 
-  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const validateEmail = async (email: string) => {
+    const { isEmailVaild } = await import('../../../firebase/auth');
+    return isEmailVaild(email, setEmailError);
+  };
+
+  const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setEmailError(null);
     setPassError(null);
 
-    if (!isEmailVaild(email, setEmailError) || !isPassValid()) {
+    const isEmailValid = await validateEmail(email);
+    if (!isEmailValid || !isPassValid()) {
       return;
     }
 
@@ -39,7 +44,7 @@ const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
   };
 
   const onBlurHandlerEmail = () => {
-    if (email) isEmailVaild(email, setEmailError);
+    if (email) validateEmail(email);
   };
   return (
     <form
@@ -47,7 +52,7 @@ const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
         onSubmitHandler(e);
       }}
       aria-labelledby="Login form"
-      className="grid gap-1 text-sm font-mono"
+      className={`grid gap-1 text-sm font-mono ${isSigningIn && 'cursor-wait'}`}
     >
       <label htmlFor="email" className="block mb-1 text-white">
         Email
