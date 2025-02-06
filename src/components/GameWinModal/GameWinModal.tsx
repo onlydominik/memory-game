@@ -1,26 +1,31 @@
-import { GameSessionState } from '../../reducer/gameSessionReducer/gameSessionReducerTypes';
-import { formatTime } from '../../pages/GamePanel/GameLogicUtils';
-
+import { GameSessionState } from '../../reducers/gameSessionReducer/gameSessionReducerTypes';
+import { formatTime } from '../../features/game/services/timeUtils';
+import { styles } from './styles';
+import { StatItem } from '../GameStatPanel/StatItem';
 const GameWinModal = ({
   gameSessionState,
 }: {
   gameSessionState: GameSessionState;
 }) => {
   const { moves, missed, time } = gameSessionState;
-  const singleStatAreaClassname = 'grid justify-items-center';
   return (
-    <div className="absolute grid gap-8 px-4 justify-items-center content-center h-max sm:w-3/4 py-24 text-center border-[1rem] border-accentGreen bg-white shadow-modalShadow rounded-3xl">
-      <p className="text-5xl md:text-6xl text-accentGreen">LEVEL COMPLETED</p>
-      <p className="text-4xl md:text-5xl">{formatTime(time)} </p>
-      <div className="flex justify-center items-center max-w-max px-10 gap-10 py-4 text-xl md:text-2xl text-gameStatPanel-textSecondary bg-gameStatPanel-bgAccent rounded-xl shadow-smoothShadow">
-        <div className={singleStatAreaClassname}>
-          <p>MOVES</p>
-          <div>{moves}</div>
-        </div>
-        <div className={singleStatAreaClassname}>
-          <p>MISSED</p>
-          <div>{missed}</div>
-        </div>
+    <div
+      className={styles.modal}
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      role="dialog"
+    >
+      <h2 className={styles.title}>LEVEL COMPLETED</h2>
+      <p
+        className={styles.timer}
+        role="timer"
+        aria-label={`Completion time: ${formatTime(time)}`}
+      >
+        {formatTime(time)}{' '}
+      </p>
+      <div className={styles.statsContainer} aria-label="Game Statistics">
+        <StatItem label="MOVES" value={moves} />
+        <StatItem label="MISSED" value={missed} />
       </div>
     </div>
   );

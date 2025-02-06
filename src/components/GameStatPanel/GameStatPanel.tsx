@@ -1,20 +1,13 @@
 import { useEffect, memo, useState, useRef } from 'react';
-import { GameSessionDispatch } from '../../reducer/gameSessionReducer/gameSessionReducerTypes';
-import { GameSessionState } from '../../reducer/gameSessionReducer/gameSessionReducerTypes';
-import { formatTime } from '../../pages/GamePanel/GameLogicUtils';
 import { useGame } from '../../context/GameContext';
-import { useAuth } from '../../hooks/useAuth';
+import { styles } from './styles';
+import { Timer } from './Timer';
+import { StatItem } from './StatItem';
+import { GameStatPanelProps } from './types';
 const GameStatPanel = memo(
-  ({
-    gameStatus,
-    gameSessionDispatch,
-    moves,
-    missed,
-  }: Partial<GameSessionState> & {
-    gameSessionDispatch: GameSessionDispatch;
-  }) => {
+  ({ gameStatus, gameSessionDispatch, moves, missed }: GameStatPanelProps) => {
     const [timer, setTimer] = useState(0);
-    const interval = useRef<NodeJS.Timeout | null>(null);
+    const interval = useRef<NodeJS.Timeout | null>();
     const { state: gameCoreState } = useGame();
     useEffect(() => {
       if (gameStatus === 'inProgress')
@@ -41,29 +34,30 @@ const GameStatPanel = memo(
       }
     }, [gameStatus, timer]);
 
-    const singleStatAreaClassname = 'grid justify-items-center';
-    if (gameStatus === 'win') return null;
-    if (gameCoreState.isLoading) return null;
+    if (gameStatus === 'win' || gameCoreState.isLoading) return null;
     return (
-      <aside className="xl:absolute xl:left-[-7rem] grid gap-3 justify-center w-full xs:max-w-[30rem] xl:w-max px-4 py-4 bg-white/10 border-white border-[0.08rem] rounded-xl shadow-smoothShadow">
-        <div
-          className={`text-center content-center xl:py-14 h-[3rem] xl:h-[10rem] text-white ${
-            gameStatus === 'pending' ? 'text-2xl' : 'text-5xl'
-          }`}
-        >
-          {gameStatus === 'pending'
-            ? 'Click card to start!'
-            : formatTime(timer)}
-        </div>
-        <div className="flex justify-center gap-10 py-4 px-6 sm:px-20 xl:px-6 xl:mb-12 text-xl text-gameStatPanel-textSecondary bg-gameStatPanel-bgAccent rounded-xl shadow-smoothShadow">
-          <div className={singleStatAreaClassname}>
-            <p>MOVES</p>
-            <div>{moves}</div>
-          </div>
-          <div className={singleStatAreaClassname}>
-            <p>MISSED</p>
-            <div>{missed}</div>
-          </div>
+      <aside
+        className={styles.container}
+        role="complementary"
+        aria-label="Game Statistics"
+      >
+        <Timer
+          gameStatus={gameStatus}
+          timer={timer}
+          aria-live="polite"
+          aria-atomic="true"
+        />
+        <div className={styles.statsContainer}>
+          <StatItem
+            label="MOVES"
+            value={moves}
+            aria-label={`Moves made: ${moves}`}
+          />
+          <StatItem
+            label="MISSED"
+            value={missed}
+            aria-label={`Missed attempts: ${missed}`}
+          />
         </div>
       </aside>
     );

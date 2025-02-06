@@ -1,14 +1,22 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { auth } from '../firebase/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../services/firebase/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import Loader from '../components/Loader/Loader';
+import Loader from '../components/common/Loader/Loader';
 
-export type AuthContextType = {
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+type AuthContextType = {
   currentUser: any;
   userLoggedIn: boolean;
   isLoading: boolean;
+};
+
+type AuthProviderProps = {
+  children: ReactNode;
 };
 
 export const AuthContext = createContext<AuthContextType>({
@@ -17,12 +25,8 @@ export const AuthContext = createContext<AuthContextType>({
   isLoading: true,
 });
 
-type AuthProviderProps = {
-  children: ReactNode;
-};
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
@@ -45,7 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { currentUser, isLoading } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
@@ -61,11 +65,7 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
-export const RedirectIfLoggedIn = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const RedirectIfLoggedIn = ({ children }: ProtectedRouteProps) => {
   const { userLoggedIn, isLoading } = useAuth();
 
   if (isLoading) {

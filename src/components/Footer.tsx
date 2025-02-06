@@ -1,11 +1,20 @@
+import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
 const Footer = () => {
   const { currentUser } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onClickHandler = async () => {
-    const { doSignOut } = await import('../firebase/auth');
-    await doSignOut();
+    try {
+      setIsLoading(true);
+      const { doSignOut } = await import('../services/firebase/auth');
+      await doSignOut();
+    } catch (error) {
+      console.error('Sign out failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -18,18 +27,21 @@ const Footer = () => {
         <button
           onClick={onClickHandler}
           className="hover:text-logoTheme underline"
+          disabled={isLoading}
         >
           {currentUser.isAnonymous ? 'log in' : 'sign out'}
         </button>
         {currentUser.isAnonymous && (
-          <p className="text-logoTheme">
+          <p className="text-logoTheme" role="alert" aria-live="polite">
             Your highscores are not being saved in the highscore table.
           </p>
         )}
       </div>
 
-      <p>&copy; 2025 MIND MELD Dominik Kowalczyk</p>
-      <p className="text-gray">Icons by Icons8</p>
+      <p>&copy; {new Date().getFullYear()} MIND MELD Dominik Kowalczyk</p>
+      <p className="text-gray">
+        <span className="sr-only">Credit: </span>Icons by Icons8
+      </p>
     </footer>
   );
 };

@@ -4,7 +4,7 @@ import Header from './Header';
 const baseParagraphClassname = 'text-lg font-sans';
 const Fallback = () => {
   return (
-    <div className="relative max-w-screen-lg min-h-screen sm:pt-8 mx-auto">
+    <main className="relative max-w-screen-lg min-h-screen sm:pt-8 mx-auto">
       <Header />
       <div className="grid justify-center mx-2 xs:mx-auto w-fit p-8 sm:p-16 bg-white/20 border border-white text-white rounded-3xl cursor-default">
         <h1 className="text-8xl text-center mb-8">404</h1>
@@ -17,12 +17,13 @@ const Fallback = () => {
         </p>
         <Link
           className={`${baseParagraphClassname} block w-fit text-logoTheme hover:underline hover:underline-offset-2`}
+          aria-label="Return to home page"
           to={'/'}
         >
           Back to safety
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 

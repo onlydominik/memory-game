@@ -2,20 +2,20 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import RootLayout from './layouts/RootLayout';
 import Fallback from './components/Fallback';
-import Loader from './components/Loader/Loader';
+import Loader from './components/common/Loader/Loader';
 
-const Login = lazy(() => import('./pages/auth/Login/Login'));
-const Register = lazy(() => import('./pages/auth/Register/Register'));
+const Login = lazy(() => import('./features/auth/pages/Login'));
+const Register = lazy(() => import('./features/auth/pages/Register'));
 const LevelPickerPanel = lazy(
-  () => import('./pages/LevelPickerPanel/LevelPickerPanel')
+  () => import('./features/game/pages/LevelPickerPanel')
 );
-const GamePanel = lazy(() => import('./pages/GamePanel/GamePanel'));
+const GamePanel = lazy(() => import('./features/game/pages/GamePanel'));
 const HighscoresScreen = lazy(
-  () => import('./pages/HighscoresScreen/HighscoresScreen')
+  () => import('./features/highscores/pages/HighscoresScreen')
 );
 
-import { loader as PlayAreaLoader } from './pages/GamePanel/PlayArea/PlayArea.loader';
-import { loader as HighscoresScreenLoader } from './pages/HighscoresScreen/HighscoresScreen.loader';
+import { loader as PlayAreaLoader } from './features/game/loaders/PlayArea.loader';
+import { loader as HighscoresScreenLoader } from './features/highscores/loaders/HighscoresScreen.loader';
 import { AuthProvider, RedirectIfLoggedIn } from './context/AuthContext';
 
 const router = createBrowserRouter([

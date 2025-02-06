@@ -9,7 +9,6 @@ interface BaseInputProps {
   error?: string | null;
 }
 
-// Combine base props with HTML input attributes, excluding ones we defined
 export type InputProps = BaseInputProps &
   Omit<InputHTMLAttributes<HTMLInputElement>, keyof BaseInputProps>;
 
@@ -68,7 +67,6 @@ export type FetchResult<T> = {
   loading: boolean;
 };
 
-//GAME PANEL TYPES
 export type TimeoutId = ReturnType<typeof setTimeout>;
 export type UseRefTimeout = React.MutableRefObject<TimeoutId | undefined>;
 

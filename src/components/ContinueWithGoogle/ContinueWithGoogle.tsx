@@ -3,7 +3,7 @@ import './ContinueWithGoogleStyles.css';
 const ContinueWithGoogle = () => {
   const navigate = useNavigate();
   const onClickHandler = async () => {
-    const { doSignInWithGoogle } = await import('../../firebase/auth');
+    const { doSignInWithGoogle } = await import('../../services/firebase/auth');
     await doSignInWithGoogle();
     navigate('/');
   };

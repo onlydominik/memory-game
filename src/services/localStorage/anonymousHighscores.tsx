@@ -2,8 +2,7 @@ import {
   AnonymousHighscore,
   HighscoresByChallengeAnonymous,
 } from '../../types';
-
-export const ANONYMOUS_HIGHSCORES_KEY = 'anonymousHighscores';
+import { ANONYMOUS_HIGHSCORES_KEY } from '../../utils/constants';
 
 export const getAnonymousHighscores = (): HighscoresByChallengeAnonymous => {
   const stored = localStorage.getItem(ANONYMOUS_HIGHSCORES_KEY);

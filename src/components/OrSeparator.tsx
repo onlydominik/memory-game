@@ -8,4 +8,6 @@ const OrSeparator = () => {
   );
 };
 
+OrSeparator.displayName = 'OrSeparator';
+
 export default OrSeparator;
