@@ -1,14 +1,18 @@
-# MIND MELD - Memory Game
+# Mind Meld - Memory Game
 
-A memory game built with **React**, **TypeScript**, **Tailwind CSS**, and **json-server**. Test your memory and beat your best time by finding all matching pairs!
+**Mind Meld** is a memory game designed to challenge and improve your visual memory. The game features engaging memory challenges and a leaderboard to track the best scores. It is now available to play at [mindmeld.pl].
 
----
+## Features
 
-## **Features**
+- 🎮 **Core Gameplay Mode**: Test your memory with various levels of difficulty.
+- 🧩 **Interactive Memory Challenges**: Train your visual memory through unique patterns and sequences.
+- 🏆 **Leaderboard**: Compete for the best score globally and see how you rank against other players.
+- 🎨 **Minimalist Design**: A user-friendly and intuitive interface that ensures an enjoyable gaming experience.
 
-- Flip cards to find matching pairs.
-- Track your time and aim for a new personal record.
+## Play the Game
 
----
+You can play **Mind Meld** directly in your browser by visiting [mindmeld.pl].
 
-Icons by Icons8
+## Feedback
+
+This project is in the pre-release stage, and your feedback is essential to improving the game. Please feel free to report any bugs or suggest new features via GitHub Issues or by contacting with me.
