@@ -1,0 +1,73 @@
+import { useEffect, memo, useState, useRef } from 'react';
+import { useGame } from '../../context/GameContext';
+import { styles } from './styles';
+import { Timer } from './Timer';
+import { StatItem } from './StatItem';
+import { GameStatPanelProps } from './types';
+const GameStatPanel = memo(
+  ({ gameStatus, gameSessionDispatch, moves, missed }: GameStatPanelProps) => {
+    const [timer, setTimer] = useState(0);
+    const interval = useRef<NodeJS.Timeout | null>();
+    const { state: gameCoreState } = useGame();
+    useEffect(() => {
+      if (gameStatus === 'inProgress')
+        interval.current = setInterval(() => {
+          setTimer((prev) => prev + 1);
+        }, 1000);
+
+      return () => {
+        if (interval.current) {
+          clearInterval(interval.current as NodeJS.Timeout);
+        }
+      };
+    }, [gameStatus]);
+
+    useEffect(() => {
+      if (gameStatus === 'win') {
+        gameSessionDispatch({
+          type: 'SET_TIME',
+          payload: timer,
+        });
+        if (interval.current) {
+          clearInterval(interval.current);
+        }
+      }
+    }, [gameStatus, timer]);
+
+    if (gameStatus === 'win' || gameCoreState.isLoading) return null;
+    return (
+      <aside
+        className={styles.container}
+        role="complementary"
+        aria-label="Game Statistics"
+      >
+        <Timer
+          gameStatus={gameStatus}
+          timer={timer}
+          aria-live="polite"
+          aria-atomic="true"
+        />
+        <div className={styles.statsContainer}>
+          <StatItem
+            label="MOVES"
+            value={moves}
+            aria-label={`Moves made: ${moves}`}
+          />
+          <StatItem
+            label="MISSED"
+            value={missed}
+            aria-label={`Missed attempts: ${missed}`}
+          />
+        </div>
+      </aside>
+    );
+  },
+  (prev, next) =>
+    prev.gameStatus === next.gameStatus &&
+    prev.moves === next.moves &&
+    prev.missed === next.missed
+);
+
+GameStatPanel.displayName = 'GameStatPanel';
+
+export default GameStatPanel;
