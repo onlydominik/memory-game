@@ -7,7 +7,7 @@ import {
   UserCredential,
 } from 'firebase/auth';
 import { auth } from './firebase';
-import { ANONYMOUS_HIGHSCORES_KEY } from '../../utils/constants';
+import { ANONYMOUS_HIGHSCORES_KEY } from '@utils/constants';
 
 interface AuthError extends Error {
   code: string;
@@ -79,9 +79,8 @@ export const doSignOut = () => {
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const isEmailVaild = (email: string, setErrorFunc: any) => {
+export const isEmailValid = (email: string) => {
   if (!emailRegex.test(email)) {
-    setErrorFunc('Invalid email address');
     return false;
   }
   return true;

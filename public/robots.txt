@@ -1,0 +1,15 @@
+User-agent: *
+
+Allow: /
+Allow: /login
+Allow: /register
+Allow: /highscores
+Allow: /level/*
+
+Disallow: /assets/
+Disallow: /*.js$
+Disallow: /*.css$
+
+# Crawl delay to prevent overloading
+Crawl-delay: 10
+

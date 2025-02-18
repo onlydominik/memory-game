@@ -1,16 +1,15 @@
 import { useEffect, useRef } from 'react';
-
+import { DEFAULT_APP_TITLE } from '@utils/constants';
 interface UseDocumentTitleOptions {
   prefix?: string;
   suffix?: string;
 }
 
-export const useDocumentTitle = (
+const useDocumentTitle = (
   title: string,
   options: UseDocumentTitleOptions = {}
 ) => {
   const { prefix = '', suffix = '' } = options;
-  const defaultTitle = 'MIND MELD';
   const previousTitleRef = useRef<string>(document.title);
 
   useEffect(() => {
@@ -19,7 +18,7 @@ export const useDocumentTitle = (
         previousTitleRef.current = document.title;
       }
 
-      const newTitle = [prefix, title || defaultTitle, suffix]
+      const newTitle = [prefix, title || DEFAULT_APP_TITLE, suffix]
         .filter(Boolean)
         .join(' ');
 
@@ -33,3 +32,5 @@ export const useDocumentTitle = (
     }
   }, [title, prefix, suffix]);
 };
+
+export { useDocumentTitle };

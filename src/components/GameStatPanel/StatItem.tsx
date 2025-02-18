@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { styles } from './styles';
 import { StatItemProps } from './types';
 
-export const StatItem = memo<StatItemProps>(({ label, value, ...props }) => (
+const StatItem: React.FC<StatItemProps> = memo(({ label, value, ...props }) => (
   <div
     className={styles.statItem}
     role="status"
@@ -15,7 +15,7 @@ export const StatItem = memo<StatItemProps>(({ label, value, ...props }) => (
     </span>
     <output
       aria-labelledby={`${label.toLowerCase()}-label`}
-      className="block text-2xl font-bold"
+      className="block text-2xl font-bold font-mono"
     >
       {value}
     </output>
@@ -23,3 +23,5 @@ export const StatItem = memo<StatItemProps>(({ label, value, ...props }) => (
 ));
 
 StatItem.displayName = 'StatItem';
+
+export { StatItem };

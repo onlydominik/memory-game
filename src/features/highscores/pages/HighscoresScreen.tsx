@@ -1,14 +1,17 @@
 import { useLoaderData } from 'react-router-dom';
-import { Highscore } from '../../../types';
 import {
   difficultyClassMap,
   medalScoreTimeColors,
-} from '../../../utils/constants/gameStyleUtils';
-import MedalIcons from '../../../components/MedalIcons';
+} from '@utils/constants/cardDifficultyStyles';
+import { MedalIcons } from '@components/MedalIcons';
 import { formatTime } from '../../game/services/timeUtils';
+import { useDocumentTitle } from '@hooks/useDocumentTitle';
+import type { Highscore } from '@typings/index';
+
 const HighscoresScreen = () => {
   const data: Record<string, Highscore[]> = useLoaderData();
 
+  useDocumentTitle('Highscores', { suffix: '- MIND MELD' });
   return (
     <main className="max-w-screen-sm mx-auto">
       {Object.entries(data).map(

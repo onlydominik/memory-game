@@ -1,26 +1,21 @@
-import {
-  AnonymousHighscore,
-  HighscoresByChallengeAnonymous,
-} from '../../types';
-import { ANONYMOUS_HIGHSCORES_KEY } from '../../utils/constants';
+import { ANONYMOUS_HIGHSCORES_KEY } from '@utils/constants';
+import { sortHighscores } from '@utils/sortHighscores';
+import type { Highscore, HighscoresByChallenge } from '@typings/index';
 
-export const getAnonymousHighscores = (): HighscoresByChallengeAnonymous => {
+const getAnonymousHighscores = (): HighscoresByChallenge => {
   const stored = localStorage.getItem(ANONYMOUS_HIGHSCORES_KEY);
   return stored ? JSON.parse(stored) : { easy: [], medium: [], hard: [] };
 };
 
-export const saveAnonymousHighscore = (highscore: AnonymousHighscore) => {
+const saveAnonymousHighscore = (highscore: Highscore) => {
   const highscores = getAnonymousHighscores();
   const { difficulty } = highscore;
 
   highscores[difficulty] = [...highscores[difficulty], highscore]
-    .sort((a, b) => {
-      if (a.moves === b.moves) {
-        return a.time - b.time;
-      }
-      return a.moves - b.moves;
-    })
+    .sort(sortHighscores)
     .slice(0, 10);
 
   localStorage.setItem(ANONYMOUS_HIGHSCORES_KEY, JSON.stringify(highscores));
 };
+
+export { getAnonymousHighscores, saveAnonymousHighscore };

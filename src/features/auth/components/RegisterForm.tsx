@@ -1,66 +1,81 @@
-import { FormEvent, useEffect, useState } from 'react';
-import { Input } from '../../../components/common/Input';
-import OrSeparator from '../../../components/OrSeparator';
-import { RegisterFormProps } from '../types/TypesRegister';
-import ContinueWithGoogle from '../../../components/ContinueWithGoogle/ContinueWithGoogle';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { Input } from '@components/common/Input';
+import { OrSeparator } from '@components/OrSeparator';
+import { ContinueWithGoogle } from '@components/ContinueWithGoogle/ContinueWithGoogle';
+import { isPasswordMatching } from '../utils/isPasswordMatching';
+import { validateEmail } from '../utils/validateEmail';
+import { validatePasswordLength } from '../utils/validatePasswordLength';
+import type { AuthError } from 'firebase/auth';
+
+interface RegisterFormProps {
+  onSubmit: (email: string, username: string, password: string) => void;
+  authError: AuthError | null;
+}
 
 const RegisterForm = ({ onSubmit, authError }: RegisterFormProps) => {
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
 
-  const validateEmail = async (email: string) => {
-    const { isEmailVaild } = await import('../../../services/firebase/auth');
-    return isEmailVaild(email, setEmailError);
-  };
-
-  const isPasswordMatching = (
-    password: string,
-    confirmPassword: string
-  ): boolean => {
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return false;
-    }
-    return true;
-  };
-
-  const isPasswordValid = (password: string): boolean => {
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return false;
-    }
-    return true;
-  };
-
   useEffect(() => {
-    if (authError && authError.code === 'auth/invalid-email')
-      setEmailError('Invalid email address firebase');
-    else if (authError && authError.code === 'auth/email-already-in-use')
-      setEmailError('Email already in use');
-  }),
-    [authError];
+    const updateAuthError = () => {
+      if (!authError) {
+        return;
+      }
+
+      switch (authError.code) {
+        case 'auth/invalid-email':
+          setEmailError('Invalid email address');
+          break;
+        case 'auth/email-already-in-use':
+          setEmailError('Email already in use');
+          break;
+        default:
+          setEmailError('An error occurred during registration');
+      }
+    };
+    updateAuthError();
+  }, [authError]);
+
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const isValid =
-      isPasswordMatching(password, confirmPassword) &&
-      isPasswordValid(password);
+      isPasswordMatching(password, confirmPassword, setError) &&
+      validatePasswordLength(password, setError);
 
     if (!isValid) return;
     onSubmit(email, username, password);
   };
 
   const onBlurHandlerConfirmPassword = (): void => {
-    if (confirmPassword) isPasswordValid(password);
-    isPasswordMatching(password, confirmPassword);
+    if (confirmPassword) validatePasswordLength(password, setError);
+    isPasswordMatching(password, confirmPassword, setError);
   };
 
   const onBlurHandlerEmail = (): void => {
-    if (email) validateEmail(email);
+    if (email) validateEmail(email, setEmailError);
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setPassword(e.target.value);
+  };
+
+  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setUsername(e.target.value);
+  };
+
+  const handleConfirmPasswordChange = (
+    e: ChangeEvent<HTMLInputElement>
+  ): void => {
+    setConfirmPassword(e.target.value);
   };
 
   return (
@@ -76,7 +91,7 @@ const RegisterForm = ({ onSubmit, authError }: RegisterFormProps) => {
         id="email"
         value={email}
         type="email"
-        onChange={setEmail}
+        onChange={handleEmailChange}
         onBlur={onBlurHandlerEmail}
         onFocus={() => {
           setEmailError(null);
@@ -93,7 +108,7 @@ const RegisterForm = ({ onSubmit, authError }: RegisterFormProps) => {
         id="username"
         value={username}
         type="text"
-        onChange={setUsername}
+        onChange={handleUsernameChange}
         required
         aria-required="true"
       />
@@ -104,7 +119,7 @@ const RegisterForm = ({ onSubmit, authError }: RegisterFormProps) => {
         id="password"
         type="password"
         value={password}
-        onChange={setPassword}
+        onChange={handlePasswordChange}
         onBlur={onBlurHandlerConfirmPassword}
         onFocus={() => setError(null)}
         aria-required="true"
@@ -116,7 +131,7 @@ const RegisterForm = ({ onSubmit, authError }: RegisterFormProps) => {
         id="confirmPassword"
         type="password"
         value={confirmPassword}
-        onChange={setConfirmPassword}
+        onChange={handleConfirmPasswordChange}
         onBlur={onBlurHandlerConfirmPassword}
         onFocus={() => setError(null)}
         error={error}

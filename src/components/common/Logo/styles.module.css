@@ -1,8 +1,8 @@
 .textLogoColor {
-  background-color: rgba(242, 100, 25, 1);
+  background-color: rgb(242, 100, 25);
   background-image: linear-gradient(
     90deg,
-    rgba(232, 138, 66, 1) 20%,
+    rgb(232, 138, 66) 20%,
     rgba(242, 100, 25, 1) 81%
   );
   background-size: 100%;

@@ -1,10 +1,10 @@
-import MedalIcons from '../../../components/MedalIcons';
-import { Highscore } from '../../../types';
-import { difficultyClassMap } from '../../../utils/constants/gameStyleUtils';
+import { MedalIcons } from '@components/MedalIcons';
+import { Challenge, Highscore } from '@typings/index';
+import { difficultyClassMap } from '@utils/constants/cardDifficultyStyles';
 import { formatTime } from '../../game/services/timeUtils';
 
 interface HighscoreTableProps {
-  difficulty: string;
+  difficulty: Challenge['difficulty'];
   scores: Highscore[];
   className?: string;
 }
@@ -71,4 +71,4 @@ const HighscoreTable = ({
 
 HighscoreTable.displayName = 'HighscoreTable';
 
-export default HighscoreTable;
+export { HighscoreTable };

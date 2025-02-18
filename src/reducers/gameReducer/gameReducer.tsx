@@ -1,4 +1,4 @@
-import { GameContextStateValue } from '../../types';
+import { GameContextStateValue, HighscoresByChallenge } from '@typings/index';
 import { GameAction, actionTypes } from './gameReducerTypes';
 
 const initialState: GameContextStateValue = {
@@ -41,32 +41,19 @@ const gameReducer = (
         currentUser: action.payload.currentUser ?? state.currentUser,
       };
 
-    case actionTypes.SET_HIGHSCORES:
-      const { difficulty, time, moves, missed, username, medalScore } =
-        action.payload;
+    case actionTypes.SET_HIGHSCORES_BY_DIFFICULTY: {
+      const { difficulty, newHighscores } = action.payload;
+
+      const updatedHighscores: HighscoresByChallenge = {
+        ...state.highscores,
+        [difficulty]: newHighscores,
+      };
+
       return {
         ...state,
-        highscores: {
-          ...state.highscores,
-          [difficulty]: [
-            ...(state.highscores[difficulty] || []),
-            {
-              username,
-              time,
-              moves,
-              missed,
-              medalScore,
-            },
-          ]
-            .sort((a, b) => {
-              if (a.time === b.time) {
-                return a.time - b.time;
-              }
-              return a.time - b.time;
-            })
-            .slice(0, 10),
-        },
+        highscores: updatedHighscores,
       };
+    }
 
     default:
       console.error(
