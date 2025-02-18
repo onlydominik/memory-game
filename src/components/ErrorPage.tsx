@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import Header from './Header';
+import { Header } from '@components/Header';
 
 const baseParagraphClassname = 'text-lg font-sans';
-const Fallback = () => {
+
+const ErrorPage: React.FC = () => {
   return (
     <main className="relative max-w-screen-lg min-h-screen sm:pt-8 mx-auto">
       <Header />
@@ -27,6 +28,6 @@ const Fallback = () => {
   );
 };
 
-Fallback.displayName = 'Fallback';
+ErrorPage.displayName = 'ErrorPage';
 
-export default Fallback;
+export { ErrorPage };

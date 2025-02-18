@@ -1,6 +1,14 @@
-import { InputProps } from '../../types';
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  value: string;
+  id: string;
+  type: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: () => void;
+  onFocus?: () => void;
+  error?: string | null;
+}
 
-export const Input = ({
+const Input = ({
   value,
   id,
   type,
@@ -22,7 +30,7 @@ export const Input = ({
         type={type}
         id={id}
         name={id}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
         onBlur={onBlur}
         onFocus={onFocus}
         autoComplete="on"
@@ -43,3 +51,5 @@ export const Input = ({
     </div>
   );
 };
+
+export { Input };

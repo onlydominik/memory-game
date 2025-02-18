@@ -1,11 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import './ContinueWithGoogleStyles.css';
-const ContinueWithGoogle = () => {
+
+const ContinueWithGoogle: React.FC = () => {
   const navigate = useNavigate();
   const onClickHandler = async () => {
-    const { doSignInWithGoogle } = await import('../../services/firebase/auth');
-    await doSignInWithGoogle();
-    navigate('/');
+    try {
+      const { doSignInWithGoogle } = await import('@services/firebase/auth');
+      await doSignInWithGoogle();
+      navigate('/');
+    } catch (err) {
+      console.error('Error signing in with Google:', err);
+    }
   };
   return (
     <button className="gsi-material-button" onClick={onClickHandler}>
@@ -47,4 +52,4 @@ const ContinueWithGoogle = () => {
   );
 };
 
-export default ContinueWithGoogle;
+export { ContinueWithGoogle };

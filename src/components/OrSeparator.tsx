@@ -1,4 +1,4 @@
-const OrSeparator = () => {
+const OrSeparator: React.FC = () => {
   return (
     <div className="flex items-center my-6 cursor-default">
       <div className="flex-grow border-t border-gray"></div>
@@ -10,4 +10,4 @@ const OrSeparator = () => {
 
 OrSeparator.displayName = 'OrSeparator';
 
-export default OrSeparator;
+export { OrSeparator };

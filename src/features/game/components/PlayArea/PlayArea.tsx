@@ -1,62 +1,70 @@
-import { useLoaderData, useParams } from 'react-router-dom';
-import { useMemo, useRef, useState, useEffect } from 'react';
-import { useGame } from '../../../../context/GameContext';
-import { Challenge, Images, TimeoutId, UseRefTimeout } from '../../../../types';
+import { useMemo, useRef } from 'react';
+
+// Components
 import PlayAreaCard from '../PlayAreaCard';
-import styles from './PlayArea.module.css';
+import { GameWinModal } from '@components/GameWinModal/GameWinModal';
+
+// Types
+import type {
+  Challenge,
+  Images,
+  TimeoutId,
+  UseRefTimeout,
+} from '@typings/index';
+import type {
+  GameSessionState,
+  GameSessionDispatch,
+} from '@reducers/gameSessionReducer/gameSessionReducerTypes';
+
+// Utils
 import {
   random,
   generateIdForImages,
   shuffleArray,
 } from '../../services/shuffleUtils';
-import GameWinModal from '../../../../components/GameWinModal/GameWinModal';
-import { useGameLogic } from '../../../../hooks/useGameLogic';
-import {
-  GameSessionState,
-  GameSessionDispatch,
-} from '../../../../reducers/gameSessionReducer/gameSessionReducerTypes';
-import questionMark from '/icons/question-mark.png';
-import Loader from '../../../../components/common/Loader/Loader';
 
-const PlayArea = ({
-  gameSessionState,
-  gameSessionDispatch,
-}: {
+// Hooks
+import { useCardMatching } from '@hooks/useCardMatching';
+import { useGameWin } from '@hooks/useGameWin';
+import { useGameContext } from '@hooks/useGameContext';
+
+// Styles and assets
+import styles from './styles.module.css';
+import { useLoaderData } from 'react-router-dom';
+
+interface PlayAreaProps {
   gameSessionState: GameSessionState;
   gameSessionDispatch: GameSessionDispatch;
+  activeChallenge: Challenge;
+}
+
+const PlayArea: React.FC<PlayAreaProps> = ({
+  gameSessionState,
+  gameSessionDispatch,
+  activeChallenge,
 }) => {
-  const { difficulty } = useParams<{ difficulty: Challenge['difficulty'] }>();
-  const images: Images = useLoaderData();
-  const { state: gameCoreState, dispatch: gameCoreDispatch } = useGame();
   const timeout: UseRefTimeout = useRef<TimeoutId>();
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const images: Images = useLoaderData();
+  const { state: gameCoreState, dispatch: gameCoreDispatch } = useGameContext();
 
-  const challenges = gameCoreState.challenges ?? [];
-  const activeChallenge = challenges.find(
-    (challenge) => challenge.difficulty === difficulty
-  );
+  const { handleCardClick } = useCardMatching({
+    gameSessionState,
+    gameSessionDispatch,
+    timeout,
+  });
 
-  if (difficulty)
-    useGameLogic({
-      gameSessionState,
-      gameSessionDispatch,
-      activeChallenge,
-      gameCoreDispatch,
-      gameCoreState,
-      difficulty,
-      timeout,
-    });
+  useGameWin({
+    gameSessionState,
+    gameSessionDispatch,
+    gameCoreState,
+    gameCoreDispatch,
+    activeChallenge,
+  });
 
   const handleClick = (index: number, id: number) => {
-    if (gameSessionState.gameStatus === 'pending') {
-      gameSessionDispatch({ type: 'SET_GAME_STATUS', payload: 'inProgress' });
-    }
-    if (gameSessionState.flippedCards.some((card) => card.index === index)) {
-      return;
-    }
-    gameSessionDispatch({ type: 'SET_FLIPPED_CARD', payload: { index, id } });
-    clearTimeout(timeout.current);
+    handleCardClick(index, id);
   };
+  console.log('playarea');
 
   const cards = useMemo(() => {
     const uniqueCardsSet: number[] = generateIdForImages(
@@ -66,7 +74,6 @@ const PlayArea = ({
     );
     return uniqueCardsSet.map((id) => images[id]);
   }, [activeChallenge, images]);
-
   const levelClass = useMemo(() => {
     switch (activeChallenge?.difficulty) {
       case 'easy':
@@ -80,34 +87,8 @@ const PlayArea = ({
     }
   }, [activeChallenge]);
 
-  useEffect(() => {
-    if (!cards.length) return;
-
-    const imagePromises = cards.map((image) => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = image.path;
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-    });
-
-    const questionMarkPromise = new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = questionMark;
-      img.onload = resolve;
-      img.onerror = reject;
-    });
-
-    Promise.all([...imagePromises, questionMarkPromise])
-      .then(() => setImagesLoaded(true))
-      .catch(console.error);
-  }, [cards]);
-
-  if (gameCoreState.isLoading || !imagesLoaded) {
-    return <Loader size="lg" color="light" className="mt-20" />;
-  }
-
+  if (gameCoreState.isLoading || !cards.length)
+    return <div className="text-6xl">asdasdasdasd</div>;
   return (
     <main className={`${styles.playAreaMain} ${levelClass}`}>
       {gameSessionState.gameStatus === 'win' ? (
@@ -124,6 +105,12 @@ const PlayArea = ({
             isFlipped={gameSessionState.flippedCards.some(
               (card) => card.index === index
             )}
+            isWrong={
+              gameSessionState.flippedCards.some(
+                (card) => card.index === index
+              ) && gameSessionState.flippedCards.length > 1
+            }
+            className={!gameCoreState.isLoading ? '' : 'invisible'}
           />
         ))
       )}
@@ -133,4 +120,4 @@ const PlayArea = ({
 
 PlayArea.displayName = 'PlayArea';
 
-export default PlayArea;
+export { PlayArea };

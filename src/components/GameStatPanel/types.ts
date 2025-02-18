@@ -1,13 +1,13 @@
 import {
   GameSessionDispatch,
   GameSessionState,
-} from '../../reducers/gameSessionReducer/gameSessionReducerTypes';
+} from '@reducers/gameSessionReducer/gameSessionReducerTypes';
 
 export interface GameStatPanelProps {
-  gameStatus: GameSessionState['gameStatus']; // Remove from Partial<GameSessionState>
-  gameSessionDispatch: GameSessionDispatch;
   moves: number;
   missed: number;
+  gameStatus: GameSessionState['gameStatus'];
+  gameSessionDispatch: GameSessionDispatch;
 }
 
 export interface StatItemProps {
@@ -16,6 +16,6 @@ export interface StatItemProps {
 }
 
 export interface TimerProps {
-  gameStatus: GameSessionState['gameStatus'] | undefined;
+  gameStatus: GameSessionState['gameStatus'];
   timer: number;
 }

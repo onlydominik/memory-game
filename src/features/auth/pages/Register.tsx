@@ -1,16 +1,16 @@
-import { Link, useNavigate } from 'react-router-dom';
-import RegisterForm from '../components/RegisterForm.tsx';
-import { Logo } from '../../../components/common/Logo/Logo.tsx';
-
-import { useAuth } from '../../../hooks/useAuth.tsx';
 import { useState, useEffect } from 'react';
-import Loader from '../../../components/common/Loader/Loader.tsx';
-import { useDocumentTitle } from '../../../hooks/useDocumentTitle.tsx';
+import { Link, useNavigate } from 'react-router-dom';
+import { Logo } from '@components/common/Logo/Logo.tsx';
+import { useAuth } from '@hooks/useAuth.tsx';
+import { useDocumentTitle } from '@hooks/useDocumentTitle.tsx';
+import RegisterForm from '../components/RegisterForm.tsx';
+import { FirebaseError } from 'firebase/app';
+import type { AuthError } from 'firebase/auth';
 
 const Register = () => {
   const { userLoggedIn, isLoading } = useAuth();
-  const [isSigningIn, setIsSigningIn] = useState(false);
-  const [authError, setAuthError] = useState<any>(null);
+  const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<AuthError | null>(null);
   const navigate = useNavigate();
 
   useDocumentTitle('Sign Up', { suffix: '- MIND MELD' });
@@ -47,16 +47,20 @@ const Register = () => {
 
       navigate('/login');
     } catch (error) {
-      setAuthError(error);
-      console.error('Register failed:', error);
+      if (error instanceof FirebaseError) {
+        setAuthError(error as AuthError);
+        console.error('Register failed:', error);
+      } else {
+        console.error('Unexpected error:', error);
+        setAuthError(null);
+      }
     } finally {
       setIsSigningIn(false);
     }
   };
 
-  if (isLoading) return <Loader size="lg" color="light" />;
   return (
-    <main className="grid gap-8 md:gap-8 mx-4 pt-8 md:pt-4 max-w-[25rem] sm:mx-auto">
+    <main className="grid gap-8 px-2 sm:px-0 pt-8 max-w-[25rem] mx-auto">
       <Logo isLink={false} />
       <RegisterForm onSubmit={onSubmit} authError={authError} />
       <p className="font-sans text-center text-white/70 text-sm">

@@ -1,41 +1,68 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouteObject,
+  RouterProvider,
+} from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import RootLayout from './layouts/RootLayout';
-import Fallback from './components/Fallback';
-import Loader from './components/common/Loader/Loader';
 
-const Login = lazy(() => import('./features/auth/pages/Login'));
-const Register = lazy(() => import('./features/auth/pages/Register'));
+// Layouts
+import RootLayout from '@/layouts/RootLayout';
+
+// Components
+import { ErrorPage } from '@components/ErrorPage';
+import { RedirectIfLoggedIn } from '@components/RedirectIfLoggedIn';
+import { FallbackElement } from '@components/HydrateFallbackElement';
+import { ProtectedRoute } from '@components/ProtectedRoute';
+
+// Context
+import { AuthProvider } from '@context/AuthContext/AuthContext';
+
+// Lazy loaded components
+const Login = lazy(() => import('@features/auth/pages/Login'));
+const Register = lazy(() => import('@features/auth/pages/Register'));
 const LevelPickerPanel = lazy(
-  () => import('./features/game/pages/LevelPickerPanel')
+  () => import('@features/game/pages/LevelPickerPanel')
 );
-const GamePanel = lazy(() => import('./features/game/pages/GamePanel'));
+const GamePanel = lazy(() => import('@features/game/pages/GamePanel'));
 const HighscoresScreen = lazy(
-  () => import('./features/highscores/pages/HighscoresScreen')
+  () => import('@features/highscores/pages/HighscoresScreen')
 );
 
-import { loader as PlayAreaLoader } from './features/game/loaders/PlayArea.loader';
-import { loader as HighscoresScreenLoader } from './features/highscores/loaders/HighscoresScreen.loader';
-import { AuthProvider, RedirectIfLoggedIn } from './context/AuthContext';
+// Loaders
+import { loader as PlayAreaLoader } from '@features/game/loaders/PlayArea.loader';
+import { loader as HighscoresScreenLoader } from '@features/highscores/loaders/HighscoresScreen.loader';
 
-const router = createBrowserRouter([
+const routes: RouteObject[] = [
   {
     path: '/',
     element: <RootLayout />,
-    errorElement: <Fallback />,
+    errorElement: <ErrorPage />,
+    hydrateFallbackElement: <FallbackElement />,
     children: [
       {
         path: '',
-        element: <LevelPickerPanel />,
+        element: (
+          <ProtectedRoute>
+            <LevelPickerPanel />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'highscores',
-        element: <HighscoresScreen />,
+        element: (
+          <ProtectedRoute>
+            <HighscoresScreen />
+          </ProtectedRoute>
+        ),
         loader: HighscoresScreenLoader,
       },
       {
         path: 'level/:difficulty',
-        element: <GamePanel />,
+        element: (
+          <ProtectedRoute>
+            <GamePanel />
+          </ProtectedRoute>
+        ),
         loader: PlayAreaLoader,
       },
     ],
@@ -56,18 +83,14 @@ const router = createBrowserRouter([
       </RedirectIfLoggedIn>
     ),
   },
-]);
+];
+
+const router = createBrowserRouter(routes);
 
 export default function App() {
   return (
     <AuthProvider>
-      <Suspense
-        fallback={
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <Loader size="lg" color="light" />
-          </div>
-        }
-      >
+      <Suspense fallback={<></>}>
         <RouterProvider router={router} />
       </Suspense>
     </AuthProvider>

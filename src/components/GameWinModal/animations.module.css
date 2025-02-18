@@ -1,0 +1,40 @@
+.statPanel {
+  background: linear-gradient(
+    -45deg,
+    #004b23,
+    #006400,
+    #007200,
+    #008000,
+    #38b000,
+    #70e000
+  );
+  background-size: 400% 400%;
+  animation: gradient 5s ease infinite;
+}
+
+.modal {
+  animation: fadeIn 300ms ease-out;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

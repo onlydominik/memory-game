@@ -1,14 +1,19 @@
 import { useEffect, memo, useState, useRef } from 'react';
-import { useGame } from '../../context/GameContext';
 import { styles } from './styles';
 import { Timer } from './Timer';
 import { StatItem } from './StatItem';
 import { GameStatPanelProps } from './types';
-const GameStatPanel = memo(
-  ({ gameStatus, gameSessionDispatch, moves, missed }: GameStatPanelProps) => {
-    const [timer, setTimer] = useState(0);
-    const interval = useRef<NodeJS.Timeout | null>();
-    const { state: gameCoreState } = useGame();
+
+const areEqual = (prev: GameStatPanelProps, next: GameStatPanelProps) =>
+  prev.moves === next.moves &&
+  prev.missed === next.missed &&
+  prev.gameStatus === next.gameStatus;
+
+const GameStatPanel: React.FC<GameStatPanelProps> = memo(
+  ({ moves, missed, gameStatus, gameSessionDispatch }) => {
+    const [timer, setTimer] = useState<number>(0);
+    const interval = useRef<NodeJS.Timeout | null>(null);
+
     useEffect(() => {
       if (gameStatus === 'inProgress')
         interval.current = setInterval(() => {
@@ -17,7 +22,7 @@ const GameStatPanel = memo(
 
       return () => {
         if (interval.current) {
-          clearInterval(interval.current as NodeJS.Timeout);
+          clearInterval(interval.current);
         }
       };
     }, [gameStatus]);
@@ -32,9 +37,10 @@ const GameStatPanel = memo(
           clearInterval(interval.current);
         }
       }
-    }, [gameStatus, timer]);
+    }, [gameStatus, timer, gameSessionDispatch]);
 
-    if (gameStatus === 'win' || gameCoreState.isLoading) return null;
+    if (gameStatus === 'win') return null;
+
     return (
       <aside
         className={styles.container}
@@ -62,12 +68,9 @@ const GameStatPanel = memo(
       </aside>
     );
   },
-  (prev, next) =>
-    prev.gameStatus === next.gameStatus &&
-    prev.moves === next.moves &&
-    prev.missed === next.missed
+  areEqual
 );
 
 GameStatPanel.displayName = 'GameStatPanel';
 
-export default GameStatPanel;
+export { GameStatPanel };

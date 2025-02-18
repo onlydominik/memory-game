@@ -1,13 +1,17 @@
-import { Logo } from './common/Logo/Logo';
+import { Logo } from '@components/common/Logo/Logo';
 import { NavLink } from 'react-router-dom';
 
-interface NavLinkProps {
+interface NavigationLinkProps {
   to: string;
   children: React.ReactNode;
 }
 
-const NavigationLink = ({ to, children }: NavLinkProps) => {
-  const getNavLinkClassName = ({ isActive }: { isActive: boolean }): string => {
+const NavigationLink = ({ to, children }: NavigationLinkProps) => {
+  const getNavigationLinkClassName = ({
+    isActive,
+  }: {
+    isActive: boolean;
+  }): string => {
     return `w-min text-lg sm:text-xl ${
       isActive
         ? 'underline underline-offset-8 decoration-1 text-header-textAccent hover:text-header-textAccent/100'
@@ -16,19 +20,15 @@ const NavigationLink = ({ to, children }: NavLinkProps) => {
   };
 
   return (
-    <NavLink to={to} className={getNavLinkClassName}>
+    <NavLink to={to} className={getNavigationLinkClassName}>
       {children}
     </NavLink>
   );
 };
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
-    <header
-      className="flex flex-col items-center gap-4 sm:gap-0 pb-3 sm:pb-8 mb-8 mx-auto max-w-2xl bg-header-bg rounded-b-3xl sm:rounded-3xl border border-dar"
-      role="navigation"
-      aria-label="Main Navigation"
-    >
+    <header className="flex flex-col items-center gap-4 sm:gap-0 pb-3 sm:pb-8 mb-8 mx-auto max-w-2xl bg-header-bg rounded-b-3xl sm:rounded-3xl border border-dar">
       <div className="w-3/4 max-w-xs py-2 pb-3 text-center shadow-smoothShadow bg-header-logoBg rounded-b-[3rem]">
         <Logo isLink={true} />
       </div>
@@ -48,4 +48,4 @@ const Header = () => {
 
 Header.displayName = 'Header';
 
-export default Header;
+export { Header };

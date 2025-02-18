@@ -1,4 +1,4 @@
-import { Challenge } from '../../../types';
+import type { Challenge } from '@typings/index';
 
 const random = (): number => {
   return Math.floor(Math.random() * 21);

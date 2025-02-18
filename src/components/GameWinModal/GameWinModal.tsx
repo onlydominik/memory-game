@@ -1,18 +1,27 @@
-import { GameSessionState } from '../../reducers/gameSessionReducer/gameSessionReducerTypes';
-import { formatTime } from '../../features/game/services/timeUtils';
+import { GameSessionState } from '@reducers/gameSessionReducer/gameSessionReducerTypes';
+import { formatTime } from '@features/game/services/timeUtils';
 import { styles } from './styles';
-import { StatItem } from '../GameStatPanel/StatItem';
-const GameWinModal = ({
-  gameSessionState,
-}: {
+import { StatItem } from '@components/GameStatPanel/StatItem';
+import { useEffect } from 'react';
+import { runConfetti } from '@utils/confetti';
+import { Link } from 'react-router-dom';
+import animations from './animations.module.css';
+
+interface GameWinModalProps {
   gameSessionState: GameSessionState;
-}) => {
+}
+
+const GameWinModal: React.FC<GameWinModalProps> = ({ gameSessionState }) => {
   const { moves, missed, time } = gameSessionState;
+
+  useEffect(() => {
+    runConfetti();
+  }, []);
+
   return (
     <div
-      className={styles.modal}
+      className={`${styles.container} ${animations.modal}`}
       aria-modal="true"
-      aria-labelledby="modal-title"
       role="dialog"
     >
       <h2 className={styles.title}>LEVEL COMPLETED</h2>
@@ -23,14 +32,23 @@ const GameWinModal = ({
       >
         {formatTime(time)}{' '}
       </p>
-      <div className={styles.statsContainer} aria-label="Game Statistics">
+      <div
+        className={`${styles.stats} ${animations.statPanel}`}
+        aria-label="Game Statistics"
+      >
         <StatItem label="MOVES" value={moves} />
         <StatItem label="MISSED" value={missed} />
       </div>
+      <Link
+        to="/"
+        className="text-sm font-sans h-min text-white/40 hover:text-white hover:underline"
+      >
+        Back to Level Section
+      </Link>
     </div>
   );
 };
 
 GameWinModal.displayName = 'GameWinModal';
 
-export default GameWinModal;
+export { GameWinModal };

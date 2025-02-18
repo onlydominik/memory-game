@@ -23,6 +23,7 @@ export default {
       accentRed: '#FF0000',
       accentGreen: '#119200',
       accentOrange: '#D38900',
+      accentLightGreen: '#ccff33',
       accentBlue: '#00BBFF',
       accentYellow: '#F5FE00',
       accentPink: '#E800B5',
@@ -87,6 +88,18 @@ export default {
       },
       screens: {
         xs: '15rem',
+      },
+      keyframes: {
+        shake: {
+          '0%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-1px)' },
+          '50%': { transform: 'translateX(1px)' },
+          '75%': { transform: 'translateX(-1px)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        shake: 'shake 0.5s ease-in-out',
       },
     },
   },

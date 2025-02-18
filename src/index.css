@@ -1,6 +1,15 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import 'nprogress/nprogress.css';
+
+#nprogress .bar {
+  background: #f26419 !important;
+}
+
+#nprogress .spinner-icon {
+  display: none;
+}
 
 @font-face {
   font-family: 'Lilita One';
@@ -15,4 +24,17 @@ body {
   font-family: 'Lilita One', 'Georgia', 'sans-serif';
   height: 100vh;
   background: linear-gradient(#0f2027, #1f3d4a, #0f2027);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fadeOut {
+  animation: fadeOut 300ms forwards;
 }

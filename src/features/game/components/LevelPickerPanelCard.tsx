@@ -1,24 +1,33 @@
 import { Link } from 'react-router-dom';
-import { Challenge, HighscoresByChallenge } from '../../../types';
-import MedalIcons from '../../../components/MedalIcons';
+import type {
+  Challenge,
+  Highscore,
+  HighscoresByChallenge,
+} from '@typings/index';
+import { MedalIcons } from '@components/MedalIcons';
 import {
   difficultyClassMap,
   medalScoreTimeColors,
-} from '../../../utils/constants/gameStyleUtils';
-import { useAuth } from '../../../hooks/useAuth';
-const LevelPickerPanelCard = ({
-  challenge,
-  highscores,
-}: {
+} from '@utils/constants/cardDifficultyStyles';
+import { useAuth } from '@hooks/useAuth';
+
+interface LevelPickerPanelCardProps {
   challenge: Challenge;
   highscores: HighscoresByChallenge;
+}
+
+const LevelPickerPanelCard: React.FC<LevelPickerPanelCardProps> = ({
+  challenge,
+  highscores,
 }) => {
   const { difficulty, uniqueCards } = challenge;
   const { currentUser } = useAuth();
-  const getAnonymousHighscores = (difficulty: string) => {
+
+  const getAnonymousHighscores = (difficulty: Challenge['difficulty']) => {
     const stored = localStorage.getItem('anonymousHighscores');
     if (!stored) return [];
-    const scores = JSON.parse(stored);
+    const scores = JSON.parse(stored) as HighscoresByChallenge;
+
     return scores[difficulty] || [];
   };
 
@@ -26,11 +35,13 @@ const LevelPickerPanelCard = ({
     ? getAnonymousHighscores(difficulty)
     : highscores[difficulty] || [];
 
-  const currentUserHighscoreIndex = records.findIndex((el: any) => {
-    return currentUser?.isAnonymous
-      ? el.username === 'Guest'
-      : el.username === currentUser?.displayName;
-  });
+  const currentUserHighscoreIndex = records.findIndex(
+    (highscore: Highscore) => {
+      return currentUser?.isAnonymous
+        ? highscore.username === 'Guest'
+        : highscore.username === currentUser?.displayName;
+    }
+  );
   const highscore = records[currentUserHighscoreIndex] || {
     time: 0,
     medalScore: 0,
@@ -70,6 +81,7 @@ const LevelPickerPanelCard = ({
         className={`block w-full py-2 text-center text-2xl text-challenge-bg/50 hover:text-white/90 ${difficultyClassBg}`}
       >
         START
+        <span className="sr-only">{` challenge for ${difficulty} level`}</span>
       </Link>
     </article>
   );

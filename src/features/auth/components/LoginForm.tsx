@@ -1,50 +1,61 @@
-import { FormEvent, useEffect, useState } from 'react';
-import { Input } from '../../../components/common/Input';
-import OrSeparator from '../../../components/OrSeparator';
-import ContinueWithGoogle from '../../../components/ContinueWithGoogle/ContinueWithGoogle';
-import { LoginFormProps } from '../types/TypesLogin';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { Input } from '@components/common/Input';
+import { OrSeparator } from '@components/OrSeparator';
+import { ContinueWithGoogle } from '@components/ContinueWithGoogle/ContinueWithGoogle';
+import { validateEmail } from '../utils/validateEmail';
+import type { AuthError } from 'firebase/auth';
 
-const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+interface LoginFormProps {
+  onSubmit: (email: string, password: string) => Promise<void>;
+  authError: AuthError | null;
+  isSigningIn: boolean;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({
+  onSubmit,
+  authError,
+  isSigningIn,
+}) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passError, setPassError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (authError && authError.code === 'auth/invalid-credential')
+    if (authError?.code === 'auth/invalid-credential') {
       setEmailError('Invalid email or password. Please try again.');
-  }),
-    [authError];
+    }
+  }, [authError]);
 
-  const isPassValid = () => {
-    if (password === '') {
+  const validatePassword = (value: string): boolean => {
+    if (!value.trim()) {
       setPassError('You must enter a password');
       return false;
     }
+    setPassError(null);
     return true;
-  };
-
-  const validateEmail = async (email: string) => {
-    const { isEmailVaild } = await import('../../../services/firebase/auth');
-    return isEmailVaild(email, setEmailError);
   };
 
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const isEmailValid = await validateEmail(email, setEmailError);
+    const isPasswordValid = validatePassword(password);
 
-    setEmailError(null);
-    setPassError(null);
-
-    const isEmailValid = await validateEmail(email);
-    if (!isEmailValid || !isPassValid()) {
-      return;
+    if (isEmailValid && isPasswordValid) {
+      await onSubmit(email, password);
     }
-
-    onSubmit(email, password);
   };
 
   const onBlurHandlerEmail = () => {
-    if (email) validateEmail(email);
+    if (email) validateEmail(email, setEmailError);
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
   };
 
   return (
@@ -60,7 +71,7 @@ const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
         id="email"
         value={email}
         type="email"
-        onChange={setEmail}
+        onChange={handleEmailChange}
         onBlur={onBlurHandlerEmail}
         onFocus={() => {
           setEmailError(null);
@@ -77,7 +88,7 @@ const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
         id="password"
         type="password"
         value={password}
-        onChange={setPassword}
+        onChange={handlePasswordChange}
         onFocus={() => {
           setPassError(null);
         }}
@@ -100,4 +111,4 @@ const LoginForm = ({ onSubmit, authError, isSigningIn }: LoginFormProps) => {
 
 LoginForm.displayName = 'LoginForm';
 
-export default LoginForm;
+export { LoginForm };
